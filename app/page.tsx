@@ -1,65 +1,190 @@
-import Image from "next/image";
+"use client";
+
+import { WalletButton } from "./components/WalletButton";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white">
+      {/* Navigation */}
+      <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-slate-950/80 border-b border-slate-800">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center">
+              <span className="text-xl">🎓</span>
+            </div>
+            <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+              SkillChain
+            </span>
+          </div>
+          <div className="hidden md:flex items-center gap-8 text-sm text-slate-300">
+            <a href="#features" className="hover:text-white transition-colors">
+              Features
+            </a>
+            <a href="#about" className="hover:text-white transition-colors">
+              About
+            </a>
+            <a href="#contact" className="hover:text-white transition-colors">
+              Contact
+            </a>
+          </div>
+          <WalletButton />
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="pt-40 pb-32 px-6">
+        <div className="max-w-5xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-sm mb-8">
+            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+            Powered by Solana
+          </div>
+
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+            Your Skills.
+            <br />
+            <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
+              Verified Forever.
+            </span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+
+          <p className="text-xl text-slate-400 max-w-xl mx-auto mb-12">
+            The future of academic credentials. Secure, verifiable, and truly
+            yours.
           </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <WalletButton />
+            <a
+              href="#features"
+              className="px-8 py-3 rounded-full border border-slate-700 text-slate-300 hover:bg-slate-800 transition-all"
+            >
+              Explore →
+            </a>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Features Section */}
+      <section id="features" className="py-24 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Why SkillChain?
+            </h2>
+            <p className="text-slate-400 max-w-lg mx-auto">
+              A new standard for digital credentials.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="p-8 rounded-2xl bg-slate-800/30 border border-slate-700 hover:border-purple-500/50 transition-all">
+              <div className="w-14 h-14 rounded-xl bg-purple-500/20 flex items-center justify-center text-2xl mb-6">
+                🔐
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Tamper-Proof</h3>
+              <p className="text-slate-400">
+                Credentials stored on-chain can never be altered or forged.
+              </p>
+            </div>
+
+            <div className="p-8 rounded-2xl bg-slate-800/30 border border-slate-700 hover:border-pink-500/50 transition-all">
+              <div className="w-14 h-14 rounded-xl bg-pink-500/20 flex items-center justify-center text-2xl mb-6">
+                ⚡
+              </div>
+              <h3 className="text-xl font-semibold mb-3">
+                Instant Verification
+              </h3>
+              <p className="text-slate-400">
+                Verify any credential in seconds, not days.
+              </p>
+            </div>
+
+            <div className="p-8 rounded-2xl bg-slate-800/30 border border-slate-700 hover:border-blue-500/50 transition-all">
+              <div className="w-14 h-14 rounded-xl bg-blue-500/20 flex items-center justify-center text-2xl mb-6">
+                🌐
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Truly Portable</h3>
+              <p className="text-slate-400">
+                Your achievements follow you, wherever you go.
+              </p>
+            </div>
+          </div>
         </div>
-      </main>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="py-24 px-6 bg-slate-900/50">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            Built for the Future
+          </h2>
+          <p className="text-lg text-slate-400 leading-relaxed mb-8">
+            SkillChain leverages Solana's high-speed blockchain to create a
+            seamless experience for issuing and verifying academic credentials.
+            Whether you're an institution looking to modernize your records or a
+            professional showcasing your achievements, SkillChain has you
+            covered.
+          </p>
+          <div className="flex justify-center gap-8 text-center">
+            <div>
+              <div className="text-3xl font-bold text-purple-400">Secure</div>
+              <div className="text-sm text-slate-500">Blockchain-backed</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-pink-400">Fast</div>
+              <div className="text-sm text-slate-500">Sub-second finality</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-blue-400">Affordable</div>
+              <div className="text-sm text-slate-500">Minimal fees</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-24 px-6">
+        <div className="max-w-3xl mx-auto text-center">
+          <div className="p-12 rounded-3xl bg-gradient-to-br from-purple-500/20 via-pink-500/10 to-blue-500/20 border border-purple-500/20">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Get Started Today
+            </h2>
+            <p className="text-slate-400 mb-8 max-w-md mx-auto">
+              Connect your wallet and experience the next generation of
+              verifiable credentials.
+            </p>
+            <WalletButton />
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer id="contact" className="py-12 px-6 border-t border-slate-800">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center">
+              <span className="text-sm">🎓</span>
+            </div>
+            <span className="font-semibold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+              SkillChain
+            </span>
+          </div>
+          <p className="text-slate-500 text-sm">
+            © 2026 SkillChain. All rights reserved.
+          </p>
+          <div className="flex items-center gap-6 text-slate-400 text-sm">
+            <a href="#" className="hover:text-white transition-colors">
+              Twitter
+            </a>
+            <a href="#" className="hover:text-white transition-colors">
+              Discord
+            </a>
+            <a href="#" className="hover:text-white transition-colors">
+              GitHub
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
