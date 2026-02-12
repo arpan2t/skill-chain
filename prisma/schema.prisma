@@ -1,14 +1,31 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client"
-  output   = "../lib/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  password     String
+  user_wallet  String?
+  user_type    Int      @default(0) // 0 = admin, 1 = student
+  image        String?
+  createdAt    DateTime @default(now())
+
+  certificates Certificate[] @relation("IssuedCertificates")
+}
+
+model Certificate {
+  id                 String   @id @default(uuid())
+  destination_wallet String
+  nftAddress         String   @unique
+  ipfsUrl            String
+  mintedAt           DateTime @default(now())
+  issuedById         String
+  issuedBy           User     @relation("IssuedCertificates", fields: [issuedById], references: [id])
 }
