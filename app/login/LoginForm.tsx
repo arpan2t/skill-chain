@@ -4,6 +4,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
+import { GraduationCap, Shield, Zap, CheckCircle } from "lucide-react";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -30,8 +31,8 @@ export default function LoginForm() {
         {/* Mobile Logo */}
         <div className="lg:hidden mb-10 text-center">
           <Link href="/" className="inline-flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center">
-              <span className="text-xl">🎓</span>
+            <div className="w-10 h-10 rounded-xl bg-[#358eb8] flex items-center justify-center">
+              <GraduationCap className="w-6 h-6 text-white" />
             </div>
             <span className="text-xl font-bold text-white">SkillChain</span>
           </Link>
@@ -55,7 +56,7 @@ export default function LoginForm() {
                 setEmail(e.target.value);
               }}
               placeholder="you@example.com"
-              className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 transition-colors"
+              className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-[#358eb8] transition-colors"
             />
           </div>
 
@@ -70,7 +71,7 @@ export default function LoginForm() {
                 setPassword(e.target.value);
               }}
               placeholder="••••••••"
-              className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 transition-colors"
+              className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-[#358eb8] transition-colors"
             />
           </div>
 
@@ -78,19 +79,19 @@ export default function LoginForm() {
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"
-                className="w-4 h-4 rounded bg-slate-800 border-slate-700 text-purple-500 focus:ring-purple-500 focus:ring-offset-slate-950"
+                className="w-4 h-4 rounded bg-slate-800 border-slate-700 text-[#358eb8] focus:ring-[#358eb8] focus:ring-offset-slate-950"
               />
               <span className="text-slate-400">Remember me</span>
             </label>
             <a
               href="#"
-              className="text-purple-400 hover:text-purple-300 transition-colors"
+              className="text-[#4aa3cc] hover:text-[#358eb8] transition-colors"
             >
               Forgot password?
             </a>
           </div>
 
-          <button className="w-full py-3 rounded-xl bg-purple-600 text-white font-semibold hover:bg-purple-700 transition-colors">
+          <button className="w-full py-3 rounded-xl bg-[#358eb8] text-white font-semibold hover:bg-[#2a7296] transition-colors">
             Sign In
           </button>
         </form>
@@ -100,7 +101,7 @@ export default function LoginForm() {
           Don't have an account?{" "}
           <Link
             href="/register"
-            className="text-purple-400 hover:text-purple-300 transition-colors font-medium"
+            className="text-[#4aa3cc] hover:text-[#358eb8] transition-colors font-medium"
           >
             Sign up
           </Link>
@@ -110,15 +111,21 @@ export default function LoginForm() {
         <div className="mt-8 pt-8 border-t border-slate-800">
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
-              <div className="text-purple-400 font-bold">🔐</div>
+              <div className="flex justify-center">
+                <Shield className="w-5 h-5 text-[#358eb8]" />
+              </div>
               <div className="text-xs text-slate-500 mt-1">Secure</div>
             </div>
             <div>
-              <div className="text-purple-400 font-bold">⚡</div>
+              <div className="flex justify-center">
+                <Zap className="w-5 h-5 text-[#358eb8]" />
+              </div>
               <div className="text-xs text-slate-500 mt-1">Fast</div>
             </div>
             <div>
-              <div className="text-purple-400 font-bold">✓</div>
+              <div className="flex justify-center">
+                <CheckCircle className="w-5 h-5 text-[#358eb8]" />
+              </div>
               <div className="text-xs text-slate-500 mt-1">Verified</div>
             </div>
           </div>

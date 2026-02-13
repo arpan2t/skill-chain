@@ -3,6 +3,17 @@
 import { useState } from "react";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
+import {
+  GraduationCap,
+  Plus,
+  Wallet,
+  Tag,
+  CloudUpload,
+  X,
+  Check,
+  Zap,
+  Loader2,
+} from "lucide-react";
 
 export default function AdminDashboard() {
   const [walletAddress, setWalletAddress] = useState("");
@@ -59,11 +70,11 @@ export default function AdminDashboard() {
       <header className="fixed top-0 left-0 right-0 h-16 bg-slate-900/95 backdrop-blur border-b border-slate-800 z-50">
         <div className="h-full px-6 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-purple-600 flex items-center justify-center">
-              <span className="text-lg">🎓</span>
+            <div className="w-9 h-9 rounded-lg bg-[#358eb8] flex items-center justify-center">
+              <GraduationCap className="w-5 h-5 text-white" />
             </div>
             <span className="text-lg font-bold text-white">SkillChain</span>
-            <span className="text-xs px-2 py-1 rounded-full bg-purple-600/20 text-purple-400 font-medium">
+            <span className="text-xs px-2 py-1 rounded-full bg-[#358eb8]/20 text-[#4aa3cc] font-medium">
               Admin
             </span>
           </Link>
@@ -83,28 +94,18 @@ export default function AdminDashboard() {
       <main className="pt-16 min-h-screen">
         <div className="max-w-5xl mx-auto px-6 py-12">
           {/* Page Header */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-purple-600 mb-6">
-              <svg
-                className="w-8 h-8 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                />
-              </svg>
+          <div className="flex flex-row gap-4">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#358eb8] mb-6">
+              <Plus className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-3xl font-bold text-white mb-2">
-              Issue New Credential
-            </h1>
-            <p className="text-slate-400">
-              Mint a verifiable credential NFT to a student's Solana wallet
-            </p>
+            <div>
+              <h1 className="text-3xl font-bold text-white mb-2">
+                Issue New Credential
+              </h1>
+              <p className="text-slate-400">
+                Mint a verifiable credential NFT to a student's Solana wallet
+              </p>
+            </div>
           </div>
 
           {/* Form Card */}
@@ -159,23 +160,11 @@ export default function AdminDashboard() {
                 {/* Wallet Address */}
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-3">
-                    Student Wallet Address
+                    Reciever Wallet Address
                   </label>
                   <div className="relative">
                     <div className="absolute left-4 top-1/2 -translate-y-1/2">
-                      <svg
-                        className="w-5 h-5 text-slate-500"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
-                        />
-                      </svg>
+                      <Wallet className="w-5 h-5 text-slate-500" />
                     </div>
                     <input
                       type="text"
@@ -188,24 +177,12 @@ export default function AdminDashboard() {
                           ? isValidWallet
                             ? "border-green-500 focus:border-green-500"
                             : "border-red-500 focus:border-red-500"
-                          : "border-slate-700 focus:border-purple-500"
+                          : "border-slate-700 focus:border-[#358eb8]"
                       }`}
                     />
                     {walletAddress && isValidWallet && (
                       <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                        <svg
-                          className="w-5 h-5 text-green-500"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M5 13l4 4L19 7"
-                          />
-                        </svg>
+                        <Check className="w-5 h-5 text-green-500" />
                       </div>
                     )}
                   </div>
@@ -224,19 +201,7 @@ export default function AdminDashboard() {
                   </label>
                   <div className="relative">
                     <div className="absolute left-4 top-1/2 -translate-y-1/2">
-                      <svg
-                        className="w-5 h-5 text-slate-500"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
-                        />
-                      </svg>
+                      <Tag className="w-5 h-5 text-slate-500" />
                     </div>
                     <input
                       type="text"
@@ -244,7 +209,7 @@ export default function AdminDashboard() {
                       onChange={(e) => setImageTitle(e.target.value)}
                       placeholder="e.g., Bachelor of Computer Science - 2026"
                       required
-                      className="w-full pl-12 pr-4 py-4 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 transition-all"
+                      className="w-full pl-12 pr-4 py-4 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-[#358eb8] transition-all"
                     />
                   </div>
                 </div>
@@ -257,24 +222,12 @@ export default function AdminDashboard() {
 
                   {!imagePreview ? (
                     <label className="block cursor-pointer">
-                      <div className="border-2 border-dashed border-slate-700 rounded-xl p-12 text-center hover:border-purple-500 hover:bg-slate-800/50 transition-all">
+                      <div className="border-2 border-dashed border-slate-700 rounded-xl p-12 text-center hover:border-[#358eb8] hover:bg-slate-800/50 transition-all">
                         <div className="w-16 h-16 rounded-full bg-slate-800 flex items-center justify-center mx-auto mb-4">
-                          <svg
-                            className="w-8 h-8 text-slate-500"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                            />
-                          </svg>
+                          <CloudUpload className="w-8 h-8 text-slate-500" />
                         </div>
                         <p className="text-slate-300 mb-1">
-                          <span className="text-purple-400 font-medium">
+                          <span className="text-[#4aa3cc] font-medium">
                             Click to upload
                           </span>{" "}
                           or drag and drop
@@ -303,36 +256,12 @@ export default function AdminDashboard() {
                           onClick={removeImage}
                           className="w-10 h-10 rounded-full bg-red-600 hover:bg-red-500 flex items-center justify-center transition-colors"
                         >
-                          <svg
-                            className="w-5 h-5 text-white"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M6 18L18 6M6 6l12 12"
-                            />
-                          </svg>
+                          <X className="w-5 h-5 text-white" />
                         </button>
                       </div>
                       <div className="px-4 py-3 bg-slate-800 border-t border-slate-700">
                         <div className="flex items-center gap-3">
-                          <svg
-                            className="w-5 h-5 text-green-500"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
+                          <Check className="w-5 h-5 text-green-500" />
                           <span className="text-sm text-slate-300">
                             {imageFile?.name}
                           </span>
@@ -354,47 +283,17 @@ export default function AdminDashboard() {
                   className={`w-full py-4 rounded-xl font-semibold text-lg transition-all flex items-center justify-center gap-3 ${
                     isSubmitting || !isFormValid
                       ? "bg-slate-700 text-slate-500 cursor-not-allowed"
-                      : "bg-purple-600 text-white hover:bg-purple-500 active:scale-[0.99]"
+                      : "bg-[#358eb8] text-white hover:bg-[#2a7296] active:scale-[0.99]"
                   }`}
                 >
                   {isSubmitting ? (
                     <>
-                      <svg
-                        className="w-5 h-5 animate-spin"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                        />
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        />
-                      </svg>
+                      <Loader2 className="w-5 h-5 animate-spin" />
                       Minting Credential...
                     </>
                   ) : (
                     <>
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M13 10V3L4 14h7v7l9-11h-7z"
-                        />
-                      </svg>
+                      <Zap className="w-5 h-5" />
                       Mint Credential NFT
                     </>
                   )}

@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
-import { AuthOptions } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import Link from "next/link";
-import LoginForm from "./LoginForm";
+import RegisterForm from "./RegisterForm";
 import {
   GraduationCap,
   Building2,
@@ -10,11 +10,12 @@ import {
   Briefcase,
 } from "lucide-react";
 
-export default async function LoginPage() {
-  const session = await getServerSession(AuthOptions);
-  if (session?.user?.role === "admin") {
+export default async function RegisterPage() {
+  const session = await getServerSession(authOptions);
+  if (session) {
     redirect("/admin");
   }
+
   return (
     <div className="min-h-screen bg-slate-950 text-white flex">
       {/* Left Panel - Branding */}
@@ -30,13 +31,13 @@ export default async function LoginPage() {
 
         <div className="space-y-6">
           <h1 className="text-4xl font-bold leading-tight">
-            Your credentials.
+            Start your journey.
             <br />
-            <span className="text-[#358eb8]">Verified on-chain.</span>
+            <span className="text-[#358eb8]">Build your future.</span>
           </h1>
           <p className="text-slate-400 text-lg max-w-md">
-            Join the future of academic credentials. Secure, verifiable, and
-            truly yours forever.
+            Create your account and get access to blockchain-verified
+            credentials that last forever.
           </p>
 
           <div className="flex items-center gap-6 pt-8">
@@ -62,8 +63,8 @@ export default async function LoginPage() {
         </p>
       </div>
 
-      {/* Right Panel - Login Form */}
-      <LoginForm />
+      {/* Right Panel - Register Form */}
+      <RegisterForm />
     </div>
   );
 }

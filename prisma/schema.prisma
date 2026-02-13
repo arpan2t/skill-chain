@@ -8,7 +8,7 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
+  id           Int @id @default(autoincrement())
   name         String
   email        String   @unique
   password     String
@@ -21,11 +21,11 @@ model User {
 }
 
 model Certificate {
-  id                 String   @id @default(uuid())
+  id                 Int @id @default(autoincrement())
   destination_wallet String
   nftAddress         String   @unique
   ipfsUrl            String
   mintedAt           DateTime @default(now())
-  issuedById         String
+  issuedById         Int
   issuedBy           User     @relation("IssuedCertificates", fields: [issuedById], references: [id])
 }

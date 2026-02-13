@@ -1,39 +1,73 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { prisma } from "@/lib/prisma";
+import bcrypt from "bcrypt";
 
 export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma),
+
+  session: {
+    strategy: "jwt",
+  },
+
   providers: [
     CredentialsProvider({
-      name: "Admin",
+      name: "Credentials",
       credentials: {
         email: {},
         password: {},
       },
+
       async authorize(credentials) {
-        if (
-          credentials?.email === "admin@gmail.com" &&
-          credentials?.password === "admin123"
-        ) {
-          return { id: "1", role: "admin" };
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error("Missing credentials");
         }
-        return null;
+
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email },
+        });
+
+        if (!user) {
+          throw new Error("User not found");
+        }
+
+        const isPasswordValid = await bcrypt.compare(
+          credentials.password,
+          user.password,
+        );
+
+        if (!isPasswordValid) {
+          throw new Error("Invalid password");
+        }
+
+        return {
+          id: String(user.id),
+          name: user.name,
+          email: user.email,
+          user_type: user.user_type,
+        };
       },
     }),
   ],
+
   callbacks: {
     async jwt({ token, user }) {
-      if (user) token.role = (user as { role: string }).role;
+      if (user) {
+        token.user_type = (user as any).user_type;
+        token.id = user.id;
+      }
       return token;
     },
+
     async session({ session, token }) {
       if (session.user) {
-        (session.user as { role?: string }).role = token.role as string;
+        (session.user as any).id = token.id;
+        (session.user as any).user_type = token.user_type;
       }
       return session;
     },
   },
+
   secret: process.env.NEXTAUTH_SECRET,
-  pages: {
-    signIn: "/login",
-  },
 };

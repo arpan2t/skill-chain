@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "User" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
@@ -14,12 +14,12 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "Certificate" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "destination_wallet" TEXT NOT NULL,
     "nftAddress" TEXT NOT NULL,
     "ipfsUrl" TEXT NOT NULL,
     "mintedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "issuedById" TEXT NOT NULL,
+    "issuedById" INTEGER NOT NULL,
 
     CONSTRAINT "Certificate_pkey" PRIMARY KEY ("id")
 );

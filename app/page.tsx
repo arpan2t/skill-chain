@@ -1,20 +1,19 @@
 "use client";
 
 import { WalletButton } from "./components/WalletButton";
+import { GraduationCap, Shield, Zap, Globe, ArrowRight } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white">
+    <div className="min-h-screen bg-slate-950 text-white">
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-slate-950/80 border-b border-slate-800">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center">
-              <span className="text-xl">🎓</span>
+            <div className="w-10 h-10 rounded-xl bg-[#358eb8] flex items-center justify-center">
+              <GraduationCap className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-              SkillChain
-            </span>
+            <span className="text-xl font-bold text-[#358eb8]">SkillChain</span>
           </div>
           <div className="hidden md:flex items-center gap-8 text-sm text-slate-300">
             <a href="#features" className="hover:text-white transition-colors">
@@ -34,7 +33,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="pt-40 pb-32 px-6">
         <div className="max-w-5xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-sm mb-8">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#358eb8]/10 border border-[#358eb8]/20 text-[#4aa3cc] text-sm mb-8">
             <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
             Powered by Solana
           </div>
@@ -42,9 +41,7 @@ export default function Home() {
           <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
             Your Skills.
             <br />
-            <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
-              Verified Forever.
-            </span>
+            <span className="text-[#358eb8]">Verified Forever.</span>
           </h1>
 
           <p className="text-xl text-slate-400 max-w-xl mx-auto mb-12">
@@ -56,9 +53,9 @@ export default function Home() {
             <WalletButton />
             <a
               href="#features"
-              className="px-8 py-3 rounded-full border border-slate-700 text-slate-300 hover:bg-slate-800 transition-all"
+              className="px-8 py-3 rounded-full border border-slate-700 text-slate-300 hover:bg-slate-800 transition-all flex items-center gap-2"
             >
-              Explore →
+              Explore <ArrowRight className="w-4 h-4" />
             </a>
           </div>
         </div>
@@ -77,9 +74,9 @@ export default function Home() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="p-8 rounded-2xl bg-slate-800/30 border border-slate-700 hover:border-purple-500/50 transition-all">
-              <div className="w-14 h-14 rounded-xl bg-purple-500/20 flex items-center justify-center text-2xl mb-6">
-                🔐
+            <div className="p-8 rounded-2xl bg-slate-800/30 border border-slate-700 hover:border-[#358eb8]/50 transition-all">
+              <div className="w-14 h-14 rounded-xl bg-[#358eb8]/20 flex items-center justify-center mb-6">
+                <Shield className="w-7 h-7 text-[#358eb8]" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Tamper-Proof</h3>
               <p className="text-slate-400">
@@ -87,9 +84,9 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="p-8 rounded-2xl bg-slate-800/30 border border-slate-700 hover:border-pink-500/50 transition-all">
-              <div className="w-14 h-14 rounded-xl bg-pink-500/20 flex items-center justify-center text-2xl mb-6">
-                ⚡
+            <div className="p-8 rounded-2xl bg-slate-800/30 border border-slate-700 hover:border-[#4aa3cc]/50 transition-all">
+              <div className="w-14 h-14 rounded-xl bg-[#4aa3cc]/20 flex items-center justify-center mb-6">
+                <Zap className="w-7 h-7 text-[#4aa3cc]" />
               </div>
               <h3 className="text-xl font-semibold mb-3">
                 Instant Verification
@@ -99,9 +96,9 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="p-8 rounded-2xl bg-slate-800/30 border border-slate-700 hover:border-blue-500/50 transition-all">
-              <div className="w-14 h-14 rounded-xl bg-blue-500/20 flex items-center justify-center text-2xl mb-6">
-                🌐
+            <div className="p-8 rounded-2xl bg-slate-800/30 border border-slate-700 hover:border-[#2a7296]/50 transition-all">
+              <div className="w-14 h-14 rounded-xl bg-[#2a7296]/20 flex items-center justify-center mb-6">
+                <Globe className="w-7 h-7 text-[#2a7296]" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Truly Portable</h3>
               <p className="text-slate-400">
@@ -127,15 +124,17 @@ export default function Home() {
           </p>
           <div className="flex justify-center gap-8 text-center">
             <div>
-              <div className="text-3xl font-bold text-purple-400">Secure</div>
+              <div className="text-3xl font-bold text-[#358eb8]">Secure</div>
               <div className="text-sm text-slate-500">Blockchain-backed</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-pink-400">Fast</div>
+              <div className="text-3xl font-bold text-[#4aa3cc]">Fast</div>
               <div className="text-sm text-slate-500">Sub-second finality</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-blue-400">Affordable</div>
+              <div className="text-3xl font-bold text-[#2a7296]">
+                Affordable
+              </div>
               <div className="text-sm text-slate-500">Minimal fees</div>
             </div>
           </div>
@@ -145,7 +144,7 @@ export default function Home() {
       {/* CTA Section */}
       <section className="py-24 px-6">
         <div className="max-w-3xl mx-auto text-center">
-          <div className="p-12 rounded-3xl bg-gradient-to-br from-purple-500/20 via-pink-500/10 to-blue-500/20 border border-purple-500/20">
+          <div className="p-12 rounded-3xl bg-[#358eb8]/10 border border-[#358eb8]/20">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Get Started Today
             </h2>
@@ -162,12 +161,10 @@ export default function Home() {
       <footer id="contact" className="py-12 px-6 border-t border-slate-800">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center">
-              <span className="text-sm">🎓</span>
+            <div className="w-8 h-8 rounded-lg bg-[#358eb8] flex items-center justify-center">
+              <GraduationCap className="w-5 h-5 text-white" />
             </div>
-            <span className="font-semibold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-              SkillChain
-            </span>
+            <span className="font-semibold text-[#358eb8]">SkillChain</span>
           </div>
           <p className="text-slate-500 text-sm">
             © 2026 SkillChain. All rights reserved.
