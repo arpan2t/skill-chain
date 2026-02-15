@@ -13,14 +13,21 @@ import {
   Check,
   Zap,
   Loader2,
+  AlertCircle,
+  CheckCircle2,
 } from "lucide-react";
 
-export default function AdminDashboard() {
+export default function AdminDashboard(props) {
   const [walletAddress, setWalletAddress] = useState("");
   const [imageTitle, setImageTitle] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [mintStatus, setMintStatus] = useState<{
+    type: "success" | "error" | null;
+    message: string;
+    nftAddress?: string;
+  }>({ type: null, message: "" });
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -39,25 +46,106 @@ export default function AdminDashboard() {
     setImagePreview(null);
   };
 
+  // Helper function to safely parse JSON response
+  const safeParseJson = async (response: Response) => {
+    const text = await response.text();
+    try {
+      return JSON.parse(text);
+    } catch {
+      // If it's HTML (error page), extract a meaningful message
+      if (text.startsWith("<!DOCTYPE") || text.startsWith("<html")) {
+        throw new Error(
+          `Server error (${response.status}): The server returned an error page. Please check server logs.`,
+        );
+      }
+      throw new Error(
+        `Invalid response from server: ${text.substring(0, 100)}`,
+      );
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     setIsSubmitting(true);
+    setMintStatus({ type: null, message: "" });
 
-    console.log({
-      walletAddress,
-      imageTitle,
-      imageFile,
-    });
+    try {
+      // Step 1: Upload image to IPFS
+      const formData = new FormData();
+      formData.append("file", imageFile as File);
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+      const uploadResponse = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
 
-    alert("Credential minted successfully!");
-    setIsSubmitting(false);
+      // ...existing code...
+      const uploadResult = await safeParseJson(uploadResponse);
 
-    setWalletAddress("");
-    setImageTitle("");
-    setImageFile(null);
-    setImagePreview(null);
+      if (!uploadResponse.ok) {
+        throw new Error(uploadResult.error || "Failed to upload image to IPFS");
+      }
+
+      const { ipfsUrl } = uploadResult;
+
+      console.log("Sending payload:", { walletAddress, imageTitle, ipfsUrl });
+      console.log(
+        "Types:",
+        typeof walletAddress,
+        typeof imageTitle,
+        typeof ipfsUrl,
+      );
+      // Step 2: Mint the NFT
+      const mintResponse = await fetch("/api/mint", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          walletAddress,
+          title: imageTitle,
+          ipfsUrl,
+        }),
+      });
+
+      // ...existing code...
+      const rawText = await mintResponse.text();
+      console.log("RAW RESPONSE:", rawText);
+
+      let mintResult;
+      try {
+        mintResult = JSON.parse(rawText);
+      } catch (e) {
+        console.error("JSON Parse Failed:", e);
+        throw new Error("Server did not return valid JSON");
+      }
+
+      if (!mintResponse.ok) {
+        throw new Error(mintResult.error || "Failed to mint credential");
+      }
+
+      // Success
+      setMintStatus({
+        type: "success",
+        message: "Credential minted successfully!",
+        nftAddress: mintResult.certificate?.nftAddress,
+      });
+
+      // Reset form
+      setWalletAddress("");
+      setImageTitle("");
+      setImageFile(null);
+      setImagePreview(null);
+    } catch (error: any) {
+      console.error("Minting error:", error);
+      setMintStatus({
+        type: "error",
+        message: error.message || "An error occurred while minting",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const isValidWallet =
@@ -75,7 +163,7 @@ export default function AdminDashboard() {
             </div>
             <span className="text-lg font-bold text-white">SkillChain</span>
             <span className="text-xs px-2 py-1 rounded-full bg-[#358eb8]/20 text-[#4aa3cc] font-medium">
-              Admin
+              {props.username}
             </span>
           </Link>
 
@@ -107,6 +195,47 @@ export default function AdminDashboard() {
               </p>
             </div>
           </div>
+
+          {/* Status Message */}
+          {mintStatus.type && (
+            <div
+              className={`mb-6 p-4 rounded-xl border flex items-start gap-3 ${
+                mintStatus.type === "success"
+                  ? "bg-green-500/10 border-green-500/50 text-green-400"
+                  : "bg-red-500/10 border-red-500/50 text-red-400"
+              }`}
+            >
+              {mintStatus.type === "success" ? (
+                <CheckCircle2 className="w-5 h-5 flex-shrink-0 mt-0.5" />
+              ) : (
+                <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+              )}
+              <div>
+                <p className="font-medium">{mintStatus.message}</p>
+                {mintStatus.nftAddress && (
+                  <p className="text-sm mt-1 text-slate-400">
+                    NFT Address:{" "}
+                    <a
+                      href={`https://explorer.solana.com/address/${mintStatus.nftAddress}?cluster=devnet`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#4aa3cc] hover:underline"
+                    >
+                      {mintStatus.nftAddress.slice(0, 8)}...
+                      {mintStatus.nftAddress.slice(-8)}
+                    </a>
+                  </p>
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={() => setMintStatus({ type: null, message: "" })}
+                className="ml-auto text-slate-400 hover:text-white"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          )}
 
           {/* Form Card */}
           <form onSubmit={handleSubmit}>
@@ -253,6 +382,7 @@ export default function AdminDashboard() {
                       <div className="absolute top-3 right-3">
                         <button
                           type="button"
+                          disabled={isSubmitting}
                           onClick={removeImage}
                           className="w-10 h-10 rounded-full bg-red-600 hover:bg-red-500 flex items-center justify-center transition-colors"
                         >

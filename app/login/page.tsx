@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
-import { AuthOptions } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import Link from "next/link";
 import LoginForm from "./LoginForm";
 import {
@@ -11,9 +11,10 @@ import {
 } from "lucide-react";
 
 export default async function LoginPage() {
-  const session = await getServerSession(AuthOptions);
-  if (session?.user?.role === "admin") {
-    redirect("/admin");
+  const session = await getServerSession(authOptions);
+  if (session) {
+    if (session.user.user_type === 0) redirect("/admin");
+    redirect("/user");
   }
   return (
     <div className="min-h-screen bg-slate-950 text-white flex">

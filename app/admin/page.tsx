@@ -10,5 +10,5 @@ export default async function AdminPage() {
   } else if (session.user.user_type !== 0) {
     redirect("/");
   }
-  return <AdminDashboard />;
+  return <AdminDashboard username={session.user.name} />;
 }
