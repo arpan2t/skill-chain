@@ -26,21 +26,13 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="w-full lg:w-1/2 flex flex-col justify-center items-center p-8">
+    <div className="w-full flex flex-col justify-center items-center p-8">
       <div className="w-full max-w-md">
         {/* Mobile Logo */}
-        <div className="lg:hidden mb-10 text-center">
-          <Link href="/" className="inline-flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#358eb8] flex items-center justify-center">
-              <GraduationCap className="w-6 h-6 text-white" />
-            </div>
-            <span className="text-xl font-bold text-white">SkillChain</span>
-          </Link>
-        </div>
 
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold mb-2">Welcome back</h2>
-          <p className="text-slate-400">Connect your wallet to continue</p>
+          <h2 className="text-3xl font-bold m-0">Welcome back</h2>
+          {/* <p className="text-slate-400">Connect your wallet to continue</p> */}
         </div>
 
         {/* Email Login Option */}

@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { connection, getAdminKeypair, getMetaplex } from "@/lib/metaplex";
 import { PublicKey } from "@solana/web3.js";
+import { TokenStandard } from "@metaplex-foundation/mpl-token-metadata";
 
 // Helper function to upload metadata JSON to Pinata
 async function uploadMetadataToPinata(metadata) {
@@ -59,39 +60,29 @@ async function uploadMetadataToPinata(metadata) {
 // process.exit();
 export async function POST(req) {
   try {
-    console.log("STEP 1: API HIT");
-
     // Check authentication
     const session = await getServerSession(authOptions);
-    console.log("STEP 2: Session:", session?.user?.email);
 
     if (!session || !session.user) {
-      console.log("STEP 2 FAILED: Unauthorized");
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    console.log("STEP 3: Parsing body...");
     const body = await req.json();
-    console.log("STEP 3 DONE: BODY =", body);
 
     const { walletAddress, title, ipfsUrl } = body;
 
     // Validate inputs
     if (!walletAddress || !title || !ipfsUrl) {
-      console.log("STEP 4 FAILED: Missing fields");
       return NextResponse.json(
         { error: "Missing required fields: walletAddress, title, or ipfsUrl" },
         { status: 400 },
       );
     }
 
-    console.log("STEP 4: Wallet validation...");
     let destinationPubkey;
     try {
       destinationPubkey = new PublicKey(walletAddress);
-      console.log("STEP 4 DONE: Wallet OK:", destinationPubkey.toBase58());
     } catch {
-      console.log("STEP 4 FAILED: Invalid wallet");
       return NextResponse.json(
         { error: "Invalid Solana wallet address" },
         { status: 400 },
@@ -99,7 +90,6 @@ export async function POST(req) {
     }
 
     // Create NFT metadata and upload to Pinata
-    console.log("STEP 5: Uploading metadata to Pinata...");
     const metadata = {
       name: title,
       description: `SkillChain Credential: ${title}`,
@@ -109,33 +99,40 @@ export async function POST(req) {
         { trait_type: "Type", value: "Credential" },
         { trait_type: "Issuer", value: session.user.name || "SkillChain" },
         { trait_type: "Issued Date", value: new Date().toISOString() },
+        { trait_type: "Revoked", value: "false" },
+        { trait_type: "Revocation Reason", value: "" },
+        { trait_type: "Revocation Date", value: "" },
+        { trait_type: "Revoked By", value: "" },
       ],
       properties: {
         files: [{ uri: ipfsUrl, type: "image/png" }],
         category: "image",
+        revocationHistory: [],
       },
     };
 
     const uri = await uploadMetadataToPinata(metadata);
-    console.log("STEP 5 DONE: Pinata URI =", uri);
 
     // Get metaplex and admin keypair
-    console.log("STEP 6: Loading Metaplex...");
     const metaplex = getMetaplex();
-    console.log("STEP 6 DONE");
 
-    console.log("STEP 7: Loading Admin Keypair...");
     const adminKeypair = getAdminKeypair();
-    console.log("STEP 7 DONE: Admin =", adminKeypair.publicKey.toBase58());
 
     // Mint the NFT
-    console.log("STEP 8: Minting NFT...");
     const { nft } = await metaplex.nfts().create({
       uri,
       name: title,
       symbol: "SKILL",
       sellerFeeBasisPoints: 0,
       tokenOwner: destinationPubkey,
+
+      tokenStandard: TokenStandard.ProgrammableNonFungible,
+      ruleSet: null, // required for non-transferable pNFT
+
+      updateAuthority: adminKeypair,
+      mintAuthority: adminKeypair,
+      freezeAuthority: adminKeypair,
+
       isMutable: false,
       creators: [
         {
@@ -146,10 +143,7 @@ export async function POST(req) {
       ],
     });
 
-    console.log("STEP 8 DONE: NFT =", nft.address.toBase58());
-
     // Save to database
-    console.log("STEP 9: Saving DB...");
     const userId = parseInt(session.user.id);
     const certificate = await prisma.certificate.create({
       data: {
@@ -159,8 +153,6 @@ export async function POST(req) {
         issuedById: userId,
       },
     });
-
-    console.log("STEP 9 DONE: CERT =", certificate.id);
 
     return NextResponse.json({
       success: true,
