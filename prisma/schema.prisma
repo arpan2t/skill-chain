@@ -14,11 +14,13 @@ model User {
   password     String
   user_wallet  String?
   user_type    Int      @default(0) // 0 = admin, 1 = student
+  is_verified  Int      @default(1) // 0 = nothing , 1 = can issue / revoke 
   image        String?
   createdAt    DateTime @default(now())
 
   certificates Certificate[] @relation("IssuedCertificates")
-  revocationHistory RevocationHistory[] @relation("RevocationUser")
+  revocationHistory Revocation[] @relation("RevocationUser")
+  revocationRequests RevocationRequest[] @relation("RequestorUser")
 }
 
 model Certificate {
@@ -33,10 +35,11 @@ model Certificate {
   metadataUri      String?   // Hash of metadata to detect changes
   revoked           Boolean   @default(false)
 
-  revocationHistory RevocationHistory[] @relation("Revocation")
+  revocationHistory Revocation[] @relation("Revocation")
+  revocationRequests RevocationRequest[] @relation("CertificateRequests")
 }
 
-model RevocationHistory {
+model Revocation {
   id            Int         @id @default(autoincrement())
   certificateId Int
   certificate   Certificate @relation("Revocation" , fields: [certificateId], references: [id])
@@ -50,7 +53,24 @@ model RevocationHistory {
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 
-  @@unique([certificateId, revokedAt])
+  @@unique([certificateId])
   @@index([revokedById])
   @@index([revokedAt])
+}
+
+model RevocationRequest {
+  id            Int         @id @default(autoincrement())
+  certificateId Int
+  certificate   Certificate @relation("CertificateRequests", fields: [certificateId], references: [id])
+  requestedById Int
+  requestedBy   User        @relation("RequestorUser", fields: [requestedById], references: [id])
+  reason        String      @db.Text
+
+  adminNotes    String?     @db.Text
+  
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([certificateId])
+  @@index([requestedById])
 }

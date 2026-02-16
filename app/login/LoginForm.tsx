@@ -19,7 +19,7 @@ export default function LoginForm() {
       redirect: false,
     });
     if (response?.ok) {
-      router.push("/admin");
+      router.push("/admin/issue");
     } else {
       alert("Login failed. Please check your credentials and try again.");
     }

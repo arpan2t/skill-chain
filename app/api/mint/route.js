@@ -1,8 +1,12 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
-import { connection, getAdminKeypair, getMetaplex } from "@/lib/metaplex";
+import { authOptions } from "./../../../lib/auth";
+import { prisma } from "./../../../lib/prisma";
+import {
+  connection,
+  getAdminKeypair,
+  getMetaplex,
+} from "./../../../lib/metaplex";
 import { PublicKey } from "@solana/web3.js";
 import { TokenStandard } from "@metaplex-foundation/mpl-token-metadata";
 
