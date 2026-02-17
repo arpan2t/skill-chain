@@ -13,7 +13,7 @@ import {
 export default async function RegisterPage() {
   const session = await getServerSession(authOptions);
   if (session) {
-    if (session.user.user_type === 0) redirect("/admin");
+    if (session.user.user_type === 0) redirect("/admin/issue");
     redirect("/user");
   }
 

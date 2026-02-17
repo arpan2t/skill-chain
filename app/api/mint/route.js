@@ -73,7 +73,7 @@ export async function POST(req) {
 
     const body = await req.json();
 
-    const { walletAddress, title, ipfsUrl } = body;
+    const { walletAddress, title, description, ipfsUrl } = body;
 
     // Validate inputs
     if (!walletAddress || !title || !ipfsUrl) {
@@ -96,7 +96,7 @@ export async function POST(req) {
     // Create NFT metadata and upload to Pinata
     const metadata = {
       name: title,
-      description: `SkillChain Credential: ${title}`,
+      description: `${description || ""}`,
       image: ipfsUrl,
       symbol: "SKILL",
       attributes: [
@@ -126,6 +126,7 @@ export async function POST(req) {
     const { nft } = await metaplex.nfts().create({
       uri,
       name: title,
+      description: `${description || ""}`,
       symbol: "SKILL",
       sellerFeeBasisPoints: 0,
       tokenOwner: destinationPubkey,
@@ -155,6 +156,7 @@ export async function POST(req) {
         nftAddress: nft.address.toBase58(),
         ipfsUrl: ipfsUrl,
         issuedById: userId,
+        metadataUri: uri,
       },
     });
 
