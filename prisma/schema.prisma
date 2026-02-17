@@ -32,6 +32,9 @@ model Certificate {
   issuedById         Int
   issuedBy           User     @relation("IssuedCertificates", fields: [issuedById], references: [id])
 
+  title           String?
+  description     String?
+
   metadataUri      String?   // Hash of metadata to detect changes
   revoked           Boolean   @default(false)
 

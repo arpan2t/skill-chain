@@ -157,6 +157,8 @@ export async function POST(req) {
         ipfsUrl: ipfsUrl,
         issuedById: userId,
         metadataUri: uri,
+        title: title,
+        description: description,
       },
     });
 
@@ -168,6 +170,7 @@ export async function POST(req) {
         nftAddress: nft.address.toBase58(),
         mintTx: nft.mintAddress?.toBase58(),
         metadataUri: uri,
+        title: title,
       },
     });
   } catch (err) {
