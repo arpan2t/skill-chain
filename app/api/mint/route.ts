@@ -10,6 +10,7 @@ import {
 import { PublicKey } from "@solana/web3.js";
 import { TokenStandard } from "@metaplex-foundation/mpl-token-metadata";
 
+
 async function uploadMetadataToPinata(metadata) {
   const pinataJwt = process.env.PINATA_JWT;
   if (!pinataJwt) {
@@ -61,11 +62,6 @@ async function uploadMetadataToPinata(metadata) {
 
 export async function POST(req) {
 
-  interface CreateNftType {
-  name: string;
-  symbol: string;
-  uri: string;
-}
 
   try {
     const session = await getServerSession(authOptions);
@@ -124,7 +120,7 @@ export async function POST(req) {
     const adminKeypair = getAdminKeypair();
 
     // Mint the NFT
-    const { nft } = await metaplex.nfts().create({
+    const { nft } = await (metaplex.nfts().create as any)({
       uri,
       name: title,
       description: `${description || ""}`,
