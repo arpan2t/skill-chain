@@ -17,11 +17,11 @@ interface CertificateCardProps {
   certificate: {
     nftAddress: string;
     destination_wallet: string;
-    ipfsUrl: string;
+    image: string;
     title: string;
     description?: string;
     revoked: boolean;
-    issuedBy: { name: string };
+    issuer: string;
     student: { name: string; walletAddress: string };
     issuedAt?: string;
   };
