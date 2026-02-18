@@ -60,6 +60,13 @@ async function uploadMetadataToPinata(metadata) {
 }
 
 export async function POST(req) {
+
+  interface CreateNftType {
+  name: string;
+  symbol: string;
+  uri: string;
+}
+
   try {
     const session = await getServerSession(authOptions);
 

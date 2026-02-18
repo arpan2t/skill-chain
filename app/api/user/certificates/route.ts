@@ -76,7 +76,6 @@ export async function POST(req: Request) {
               }
             } catch (error) {
               console.error(`Error fetching metadata from ${fullNft.uri}:`, error);
-              // Try database as fallback on error too
               dbCertificate = await prisma.certificate.findUnique({
                 where: { 
                   nftAddress: nft.mintAddress.toBase58()
