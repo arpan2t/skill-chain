@@ -13,14 +13,9 @@ export default async function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex bg-background text-foreground">
-      {/* Left Panel */}
+    <div className="min-h-screen pt-16 flex bg-background text-foreground">
       <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-12 border-r border-border">
-        <div>
-          <Link href="/" className="flex items-center gap-2 mb-20">
-            <GraduationCap className="w-6 h-6 text-primary" />
-            <span className="text-lg font-semibold">SkillChain</span>
-          </Link>
+        <div className="">
           <h2 className="text-5xl font-bold leading-tight mb-4">
             Start your journey.
             <br />

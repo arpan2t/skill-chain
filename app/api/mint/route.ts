@@ -10,7 +10,6 @@ import {
 import { PublicKey } from "@solana/web3.js";
 import { TokenStandard } from "@metaplex-foundation/mpl-token-metadata";
 
-// Helper function to upload metadata JSON to Pinata
 async function uploadMetadataToPinata(metadata) {
   const pinataJwt = process.env.PINATA_JWT;
   if (!pinataJwt) {
@@ -52,7 +51,6 @@ async function uploadMetadataToPinata(metadata) {
     }
   }
 
-  // Read response as text first to safely parse
   let result = await response.json();
 
   if (!result.IpfsHash) {
@@ -61,10 +59,8 @@ async function uploadMetadataToPinata(metadata) {
   return `https://gateway.pinata.cloud/ipfs/${result.IpfsHash}`;
 }
 
-// process.exit();
 export async function POST(req) {
   try {
-    // Check authentication
     const session = await getServerSession(authOptions);
 
     if (!session || !session.user) {
@@ -75,7 +71,6 @@ export async function POST(req) {
 
     const { walletAddress, title, description, ipfsUrl } = body;
 
-    // Validate inputs
     if (!walletAddress || !title || !ipfsUrl) {
       return NextResponse.json(
         { error: "Missing required fields: walletAddress, title, or ipfsUrl" },
@@ -117,7 +112,6 @@ export async function POST(req) {
 
     const uri = await uploadMetadataToPinata(metadata);
 
-    // Get metaplex and admin keypair
     const metaplex = getMetaplex();
 
     const adminKeypair = getAdminKeypair();
@@ -143,12 +137,11 @@ export async function POST(req) {
         {
           address: adminKeypair.publicKey,
           share: 100,
-          verified: true,
+         authority: adminKeypair,
         },
       ],
     });
 
-    // Save to database
     const userId = parseInt(session.user.id);
     const certificate = await prisma.certificate.create({
       data: {
