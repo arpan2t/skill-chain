@@ -135,25 +135,6 @@ export default function NtfIssue(props) {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Top Navigation */}
-      <header className="fixed top-0 left-0 right-0 h-16 bg-background/90 backdrop-blur-sm border-b border-border z-50">
-        <div className="h-full max-w-6xl mx-auto px-6 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <GraduationCap className="w-6 h-6 text-primary" />
-            <span className="text-lg font-semibold">SkillChain</span>
-            <span className="text-xs px-2 py-0.5 rounded-full bg-secondary text-muted-foreground font-medium">
-              {props.username}
-            </span>
-          </Link>
-          <button
-            onClick={() => signOut({ callbackUrl: "/login" })}
-            className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Sign Out
-          </button>
-        </div>
-      </header>
-
       {/* Main Content */}
       <main className="pt-16 min-h-screen">
         <div className="max-w-6xl mx-auto px-6 py-16">

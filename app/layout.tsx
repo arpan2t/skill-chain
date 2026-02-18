@@ -6,6 +6,7 @@ import { WalletButton } from "./components/WalletButton";
 import { GraduationCap, Link } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../lib/auth";
+import { AuthButton } from "./components/AuthButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -76,11 +77,7 @@ export default function RootLayout({
                 </div>
                 <div className="flex flex-row items-center gap-2">
                   <WalletButton />
-                  <Link href={session ? "/admin/issue" : "/login"}>
-                    <button className="!bg-[#112833] rounded-sm  !px-6 !py-3 !text-white !font-semibold !transition-all hover:!bg-[#0e2c3b] hover:!scale-105 hover:!shadow-lg ">
-                      {session ? "Issue" : "Login"}
-                    </button>
-                  </Link>
+                  <AuthButton session={session} />
                 </div>
               </div>
             </nav>
