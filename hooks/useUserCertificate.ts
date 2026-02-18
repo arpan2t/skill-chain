@@ -3,7 +3,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 
 interface Certificate {
   nftAddress: string;
-  name: string;
+  title: string;
   description: string;
   image: string;
   attributes: any[];

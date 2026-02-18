@@ -323,11 +323,11 @@ export default function ProfilePage() {
                   certificate={{
                     nftAddress: cert.nftAddress,
                     image: cert.image,
-                    title: cert.name || "Certificate",
+                    title: cert.title || "Certificate",
                     description: cert.description || "",
                     revoked: cert.revoked || false,
-                    issuer: cert.issuer || "Unknown",
-                    issuedAt: cert.issuedAt || new Date().toISOString(),
+                    issuer: cert.issuer || "N/A",
+                    issuedAt: cert.issuedAt || "N/A",
                   }}
                   isAdmin={false}
                 />
