@@ -1,40 +1,13 @@
+import { getServerSession } from "next-auth";
+import { authOptions } from "./../lib/auth";
 import { WalletButton } from "./components/WalletButton";
 import { GraduationCap, Shield, Zap, Globe, ArrowRight } from "lucide-react";
+import { redirect } from "next/navigation";
+import Link from "next/link";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-sm border-b border-border">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <GraduationCap className="w-6 h-6 text-primary" />
-            <span className="text-lg font-semibold">SkillChain</span>
-          </div>
-          <div className="hidden md:flex items-center gap-8 text-sm text-muted-foreground">
-            <a
-              href="#features"
-              className="hover:text-foreground transition-colors"
-            >
-              Features
-            </a>
-            <a
-              href="#about"
-              className="hover:text-foreground transition-colors"
-            >
-              About
-            </a>
-            <a
-              href="#contact"
-              className="hover:text-foreground transition-colors"
-            >
-              Contact
-            </a>
-          </div>
-          <WalletButton />
-        </div>
-      </nav>
-
-      {/* Hero */}
+    <>
       <section className="pt-40 pb-28 px-6">
         <div className="max-w-3xl mx-auto">
           <p className="text-sm text-muted-foreground mb-6">
@@ -51,16 +24,15 @@ const Index = () => {
           <div className="flex items-center gap-4">
             <WalletButton />
             <a
-              href="#features"
+              href="/profile"
               className="px-5 py-2.5 text-sm font-medium rounded-lg border border-border text-secondary-foreground hover:bg-secondary transition-colors flex items-center gap-2"
             >
-              Explore <ArrowRight className="w-4 h-4" />
+              Profile <ArrowRight className="w-4 h-4" />
             </a>
           </div>
         </div>
       </section>
 
-      {/* Features */}
       <section id="features" className="py-24 px-6">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-bold mb-4">
@@ -101,7 +73,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* About */}
       <section id="about" className="py-24 px-6 bg-secondary">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-bold mb-6">
@@ -134,7 +105,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* CTA */}
       <section className="py-24 px-6">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-2xl md:text-3xl font-bold mb-4">
@@ -146,31 +116,7 @@ const Index = () => {
           <WalletButton />
         </div>
       </section>
-
-      {/* Footer */}
-      <footer id="contact" className="py-10 px-6 border-t border-border">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <GraduationCap className="w-4 h-4 text-primary" />
-            <span className="text-sm font-semibold">SkillChain</span>
-          </div>
-          <p className="text-xs text-muted-foreground">
-            © 2026 SkillChain. All rights reserved.
-          </p>
-          <div className="flex items-center gap-5 text-xs text-muted-foreground">
-            <a href="#" className="hover:text-foreground transition-colors">
-              Twitter
-            </a>
-            <a href="#" className="hover:text-foreground transition-colors">
-              Discord
-            </a>
-            <a href="#" className="hover:text-foreground transition-colors">
-              GitHub
-            </a>
-          </div>
-        </div>
-      </footer>
-    </div>
+    </>
   );
 };
 

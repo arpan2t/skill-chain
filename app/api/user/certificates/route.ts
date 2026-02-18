@@ -15,7 +15,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // Validate wallet address
     try {
       new PublicKey(walletAddress);
     } catch {
@@ -45,11 +44,10 @@ export async function POST(req: Request) {
     const nfts = await metaplex.nfts().findAllByOwner({ owner });
 
     const skillChainNfts = nfts.filter(nft => 
-      nft.symbol === "SKILL" || // Your symbol
+      nft.symbol === "SKILL" || 
       nft.creators?.some(c => c.address.equals(adminKeypair.publicKey))
     );
 
-    // Fetch full metadata for each NFT
     const certificates = await Promise.all(
       skillChainNfts.map(async (nft) => {
         try {
@@ -64,10 +62,9 @@ export async function POST(req: Request) {
               if (response.ok) {
                 metadata = await response.json();
               } else {
-                // Try to get from database as fallback
                 dbCertificate = await prisma.certificate.findUnique({
                   where: { 
-                    nftAddress: nft.mintAddress.toBase58() // Make sure this matches your schema
+                    nftAddress: nft.mintAddress.toBase58() 
                   },
                   include: {
                     issuedBy: {
@@ -95,16 +92,17 @@ export async function POST(req: Request) {
           }
 
           // Determine which source to use for each field
-          let name, description, image, attributes, issuer, issuedAt;
+          let title, description, image, attributes, issuer, issuedAt , revoked;
           
           if (flag === 1 && dbCertificate) {
             // Use database data
             title = dbCertificate.title || fullNft.name || "N/A";
             description = dbCertificate.description || "";
-            image = dbCertificate.image_url || "";
+            image = dbCertificate.ipfsUrl || "";
             attributes = []; // Could construct from db data if needed
             issuer = dbCertificate.issuedBy?.name || "N/A";
             issuedAt = dbCertificate.mintedAt?.toISOString() || null;
+            revoked = dbCertificate.revoked || false;
           } else {
             // Use on-chain metadata
             title = metadata?.name || fullNft.name || "N/A";
@@ -120,14 +118,13 @@ export async function POST(req: Request) {
             issuedAt = attributes.find(
               (a: any) => a.trait_type === "Issued Date"
             )?.value || null;
-          }
 
-          // Get revoked status (prefer on-chain for this)
-          const revokedAttr = attributes.find(
+            const revokedAttr = attributes.find(
             (a: any) => a.trait_type === "Revoked"
           )?.value;
           
-          const revoked = revokedAttr === true || revokedAttr === "true" ? true : false;
+           revoked = revokedAttr === true || revokedAttr === "true" ? true : false;
+          }
 
           return {
             nftAddress: nft.mintAddress.toBase58(),
@@ -144,7 +141,6 @@ export async function POST(req: Request) {
         } catch (error) {
           console.error(`Error processing NFT ${nft.mintAddress.toBase58()}:`, error);
           
-          // Last resort: try to get from database
           try {
             const fallbackDb = await prisma.certificate.findUnique({
               where: { nftAddress: nft.mintAddress.toBase58() },
@@ -156,12 +152,12 @@ export async function POST(req: Request) {
                 nftAddress: nft.mintAddress.toBase58(),
                 title: fallbackDb.title||nft.name || "N/A",
                 description: fallbackDb.description || "",
-                image: fallbackDb.image_url || "",
+                image: fallbackDb.ipfsUrl || "",
                 attributes: [],
                 issuer: fallbackDb.issuedBy?.name || "N/A",
                 issuedAt: fallbackDb.mintedAt?.toISOString() || null,
-                revoked: false,
-                metadataUri: fallbackDb.metadata_uri || "",
+                revoked: fallbackDb.revoked || false,
+                metadataUri: fallbackDb.metadataUri || "",
                 source: "database_emergency"
               };
             }

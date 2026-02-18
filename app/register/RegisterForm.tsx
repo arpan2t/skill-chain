@@ -14,7 +14,7 @@ export default function RegisterForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
@@ -33,9 +33,7 @@ export default function RegisterForm() {
     try {
       const response = await fetch("/api/register", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
       });
 
@@ -54,34 +52,30 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className="w-full lg:w-1/2 flex flex-col justify-center items-center p-8">
-      <div className="w-full max-w-md">
+    <div className="flex-1 flex items-center justify-center p-8">
+      <div className="w-full max-w-sm">
         {/* Mobile Logo */}
-        <div className="lg:hidden mb-10 text-center">
-          <Link href="/" className="inline-flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#358eb8] flex items-center justify-center">
-              <GraduationCap className="w-6 h-6 text-white" />
-            </div>
-            <span className="text-xl font-bold text-white">SkillChain</span>
-          </Link>
+        <div className="lg:hidden flex items-center gap-2 mb-10">
+          <GraduationCap className="w-5 h-5 text-primary" />
+          <span className="text-base font-semibold">SkillChain</span>
         </div>
 
-        <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold mb-2">Create an account</h2>
-          <p className="text-slate-400">Join SkillChain today</p>
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold mb-1">Create an account</h1>
+          <p className="text-sm text-muted-foreground">Join SkillChain today</p>
         </div>
 
-        {/* Error Message */}
+        {/* Error */}
         {error && (
-          <div className="mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/50 text-red-400 text-sm text-center">
+          <div className="mb-6 p-3 rounded-lg bg-destructive/10 border border-destructive/30 text-sm text-destructive">
             {error}
           </div>
         )}
 
-        {/* Registration Form */}
+        {/* Form */}
         <form onSubmit={handleRegister} className="space-y-4">
           <div>
-            <label className="block text-sm text-slate-400 mb-2">
+            <label className="block text-sm font-medium mb-1.5">
               Organization Name
             </label>
             <input
@@ -90,12 +84,12 @@ export default function RegisterForm() {
               onChange={(e) => setName(e.target.value)}
               placeholder="Organization Pvt. Ltd."
               required
-              className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-[#358eb8] transition-colors"
+              className="w-full px-3 py-2.5 rounded-lg bg-background border border-border text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:border-primary transition-colors"
             />
           </div>
 
           <div>
-            <label className="block text-sm text-slate-400 mb-2">
+            <label className="block text-sm font-medium mb-1.5">
               Email address
             </label>
             <input
@@ -104,26 +98,24 @@ export default function RegisterForm() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
               required
-              className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-[#358eb8] transition-colors"
+              className="w-full px-3 py-2.5 rounded-lg bg-background border border-border text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:border-primary transition-colors"
             />
           </div>
 
           <div>
-            <label className="block text-sm text-slate-400 mb-2">
-              Password
-            </label>
+            <label className="block text-sm font-medium mb-1.5">Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               required
-              className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-[#358eb8] transition-colors"
+              className="w-full px-3 py-2.5 rounded-lg bg-background border border-border text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:border-primary transition-colors"
             />
           </div>
 
           <div>
-            <label className="block text-sm text-slate-400 mb-2">
+            <label className="block text-sm font-medium mb-1.5">
               Confirm Password
             </label>
             <input
@@ -132,69 +124,54 @@ export default function RegisterForm() {
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="••••••••"
               required
-              className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-[#358eb8] transition-colors"
+              className="w-full px-3 py-2.5 rounded-lg bg-background border border-border text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:border-primary transition-colors"
             />
           </div>
 
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              id="terms"
-              required
-              className="w-4 h-4 rounded bg-slate-800 border-slate-700 text-[#358eb8] focus:ring-[#358eb8] focus:ring-offset-slate-950"
-            />
-            <label htmlFor="terms" className="text-sm text-slate-400">
+          <div className="flex items-start gap-2 pt-1">
+            <input type="checkbox" required className="mt-1 accent-primary" />
+            <span className="text-xs text-muted-foreground">
               I agree to the{" "}
-              <a href="#" className="text-[#4aa3cc] hover:text-[#358eb8]">
+              <Link href="/terms" className="text-primary hover:underline">
                 Terms of Service
-              </a>{" "}
+              </Link>{" "}
               and{" "}
-              <a href="#" className="text-[#4aa3cc] hover:text-[#358eb8]">
+              <Link href="/privacy" className="text-primary hover:underline">
                 Privacy Policy
-              </a>
-            </label>
+              </Link>
+            </span>
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 rounded-xl bg-[#358eb8] text-white font-semibold hover:bg-[#2a7296] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
           >
             {loading ? "Creating Account..." : "Create Account"}
           </button>
         </form>
 
-        {/* Sign In Link */}
-        <p className="text-center text-slate-400 mt-8">
+        <p className="text-center text-sm text-muted-foreground mt-6">
           Already have an account?{" "}
-          <Link
-            href="/login"
-            className="text-[#4aa3cc] hover:text-[#358eb8] transition-colors font-medium"
-          >
+          <Link href="/login" className="text-primary hover:underline">
             Sign in
           </Link>
         </p>
 
         {/* Features */}
-        <div className="mt-8 pt-8 border-t border-slate-800">
-          <div className="grid grid-cols-3 gap-4 text-center">
-            <div>
-              <div className="flex justify-center">
-                <Shield className="w-5 h-5 text-[#358eb8]" />
-              </div>
-              <div className="text-xs text-slate-500 mt-1">Secure</div>
+        <div className="mt-4 pt-6 border-t border-border">
+          <div className="flex justify-center gap-8">
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+              <Shield className="w-3.5 h-3.5 text-primary" />
+              Secure
             </div>
-            <div>
-              <div className="flex justify-center">
-                <Zap className="w-5 h-5 text-[#358eb8]" />
-              </div>
-              <div className="text-xs text-slate-500 mt-1">Fast</div>
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+              <Zap className="w-3.5 h-3.5 text-primary" />
+              Fast
             </div>
-            <div>
-              <div className="flex justify-center">
-                <CheckCircle className="w-5 h-5 text-[#358eb8]" />
-              </div>
-              <div className="text-xs text-slate-500 mt-1">Verified</div>
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+              <CheckCircle className="w-3.5 h-3.5 text-primary" />
+              Verified
             </div>
           </div>
         </div>
