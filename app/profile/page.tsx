@@ -319,7 +319,18 @@ export default function ProfilePage() {
                     )}
                   </button>
                 )}
-                <CertificateCard certificate={cert} isAdmin={false} />
+                <CertificateCard
+                  certificate={{
+                    nftAddress: cert.nftAddress,
+                    image: cert.image,
+                    title: cert.name || "Certificate",
+                    description: cert.description || "",
+                    revoked: cert.revoked || false,
+                    issuer: cert.issuer || "Unknown",
+                    issuedAt: cert.issuedAt || new Date().toISOString(),
+                  }}
+                  isAdmin={false}
+                />
               </div>
             ))}
           </div>

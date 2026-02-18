@@ -49,9 +49,9 @@ export async function POST(req: Request) {
     );
 
     const certificates = await Promise.all(
-      skillChainNfts.map(async (nft) => {
+      skillChainNfts.map(async (nft : any) => {
         try {
-          const fullNft = await metaplex.nfts().load({ metadata: nft });
+          const fullNft = await metaplex.nfts().load({ metadata: nft as any });
           let metadata = null;
           let dbCertificate = null;
           let flag = 0;
@@ -189,17 +189,17 @@ export async function POST(req: Request) {
       new Map(
         combined.map(item => {
           // Check if this item has a database version we should prefer
-          const dbVersion = dbCertificates.find(db => db.nft_address === item.nftAddress);
+          const dbVersion = dbCertificates.find(db => db.nftAddress === item.nftAddress);
           return [item.nftAddress, dbVersion ? {
-            nftAddress: dbVersion.nft_address,
+            nftAddress: dbVersion.nftAddress,
             title: dbVersion.title,
             description: dbVersion.description || "",
-            image: dbVersion.image_url || "",
+            image: dbVersion.ipfsUrl || "",
             attributes: [],
             issuer: dbVersion.issuedBy?.name || "N/A",
             issuedAt: dbVersion.mintedAt?.toISOString() || null,
             revoked: dbVersion.revoked || false,
-            metadataUri: dbVersion.metadata_uri || "",
+            metadataUri: dbVersion.metadataUri || "",
             source: "database_final"
           } : item];
         })

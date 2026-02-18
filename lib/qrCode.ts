@@ -21,6 +21,6 @@ export async function generateCertificateQR(nftAddress: string): Promise<string>
   }
 }
 
-export async function generateQRPDF(nftAddress: string): Promise<Buffer> {
+export async function generateQRPDF(nftAddress: string) {
   const verificationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/verify/${nftAddress}`;
 }

@@ -161,7 +161,6 @@ export async function POST(req) {
       certificate: {
         id: certificate.id,
         nftAddress: nft.address.toBase58(),
-        mintTx: nft.mintAddress?.toBase58(),
         metadataUri: uri,
         title: title,
       },

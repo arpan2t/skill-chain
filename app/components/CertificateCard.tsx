@@ -16,13 +16,12 @@ import {
 interface CertificateCardProps {
   certificate: {
     nftAddress: string;
-    destination_wallet: string;
+    destination_wallet?: string;
     image: string;
     title: string;
     description?: string;
     revoked: boolean;
     issuer: string;
-    student: { name: string; walletAddress: string };
     issuedAt?: string;
   };
   isAdmin?: boolean;

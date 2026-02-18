@@ -52,7 +52,7 @@ export async function GET(
             issuedAt: onChainData?.attributes?.find(
               (a: any) => a.trait_type === "Issued Date"
             )?.value || dbCert?.mintedAt?.toISOString() || new Date().toISOString(),
-            recipientName: dbCert?.student?.name || onChainData?.attributes?.find(
+            recipientName: onChainData?.attributes?.find(
               (a: any) => a.trait_type === "Recipient Name"
             )?.value || "Unknown",
             recipientWallet: dbCert?.destination_wallet || address.trim(),
