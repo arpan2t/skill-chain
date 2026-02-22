@@ -4,6 +4,7 @@ import {
   Award,
   Users,
   Building2,
+  FileCheck2Icon,
   FileCheck,
   Settings,
   BarChart3,
@@ -28,16 +29,31 @@ import {
 import { cn } from "./../../../lib/utility";
 
 const mainNav = [
-  { title: "Dashboard", url: "/admin", icon: LayoutDashboard, end: true },
+  {
+    title: "Dashboard",
+    url: "/admin/dashboard",
+    icon: LayoutDashboard,
+    end: true,
+  },
   { title: "Issue Certificate", url: "/admin/issue", icon: Award },
-  { title: "Revoke Certificate", url: "/admin/certificates", icon: FileCheck },
-  { title: "Request For Revoke", url: "/admin/revoke/request", icon: Users },
+  {
+    title: "Revoke Certificate",
+    url: "/admin/revoke/certificates",
+    icon: FileCheck,
+  },
+  {
+    title: "Verify Certificate",
+    url: "/admin/verify/certificates",
+    icon: ShieldCheck,
+  },
 ];
 
 const manageNav = [
-  { title: "Organizations", url: "/admin/organizations", icon: Building2 },
-  { title: "Analytics", url: "/admin/analytics", icon: BarChart3 },
-  { title: "Verifications", url: "/admin/verifications", icon: ShieldCheck },
+  {
+    title: "Revoke Requests",
+    url: "/admin/revoke/requests",
+    icon: FileCheck2Icon,
+  },
 ];
 
 const bottomNav = [
@@ -63,7 +79,7 @@ export function AppSidebar() {
         </div>
       </SidebarHeader>
 
-      <SidebarContent className="px-2 py-3 gap-0">
+      <SidebarContent className="px-2 py-3 gap-0 ">
         {/* Main */}
         <SidebarGroup className="p-0 mb-4">
           {!collapsed && (
@@ -95,7 +111,6 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* Manage */}
         <SidebarGroup className="p-0">
           {!collapsed && (
             <SidebarGroupLabel className="px-2 mb-1 text-[10px] uppercase tracking-widest text-muted-foreground font-medium">
