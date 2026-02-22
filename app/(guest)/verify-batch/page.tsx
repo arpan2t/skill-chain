@@ -1,4 +1,3 @@
-// app/verify-batch/page.tsx
 import { Suspense } from "react";
 import VerifyContent from "./VerifyContent";
 

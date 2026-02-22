@@ -9,7 +9,6 @@ import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import { PhantomWalletAdapter } from "@solana/wallet-adapter-wallets";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 
-// Import wallet adapter styles
 import "@solana/wallet-adapter-react-ui/styles.css";
 
 export function WalletContextProvider({ children }: { children: ReactNode }) {

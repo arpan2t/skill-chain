@@ -1,0 +1,79 @@
+import { WalletButton } from "./../components/WalletButton";
+import { GraduationCap } from "lucide-react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./../../lib/auth";
+import { AuthButton } from "./../components/AuthButton";
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  const session = getServerSession(authOptions);
+
+  return (
+    <div className="min-h-screen bg-background text-foreground">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-sm border-b border-border">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+          <a href="/" className="flex items-center gap-2">
+            <GraduationCap className="w-6 h-6 text-primary" />
+            <span className="text-lg font-semibold">SkillChain</span>
+          </a>
+          <div className="hidden md:flex items-center gap-8 text-sm text-muted-foreground">
+            <a
+              href="/#features"
+              className="hover:text-foreground transition-colors"
+            >
+              Features
+            </a>
+            <a
+              href="/#about"
+              className="hover:text-foreground transition-colors"
+            >
+              About
+            </a>
+            <a
+              href="/#contact"
+              className="hover:text-foreground transition-colors"
+            >
+              Contact
+            </a>
+            <a
+              href="/profile"
+              className="hover:text-foreground transition-colors"
+            >
+              Profile
+            </a>
+          </div>
+          <div className="flex flex-row items-center gap-2">
+            <WalletButton />
+            <AuthButton session={session} />
+          </div>
+        </div>
+      </nav>
+      {children}
+      <footer id="contact" className="py-10 px-6 border-t border-border">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <GraduationCap className="w-4 h-4 text-primary" />
+            <span className="text-sm font-semibold">SkillChain</span>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            © 2026 SkillChain. All rights reserved.
+          </p>
+          <div className="flex items-center gap-5 text-xs text-muted-foreground">
+            <a href="#" className="hover:text-foreground transition-colors">
+              Twitter
+            </a>
+            <a href="#" className="hover:text-foreground transition-colors">
+              Discord
+            </a>
+            <a href="#" className="hover:text-foreground transition-colors">
+              GitHub
+            </a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}

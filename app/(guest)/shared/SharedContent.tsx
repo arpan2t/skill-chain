@@ -15,7 +15,7 @@ import {
   ChevronUp,
   Copy,
 } from "lucide-react";
-import CertificateCard from "./../components/CertificateCard";
+import CertificateCard from "./../../components/CertificateCard";
 
 interface Certificate {
   nftAddress: string;

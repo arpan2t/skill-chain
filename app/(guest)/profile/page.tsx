@@ -2,8 +2,8 @@
 
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { useUserCertificates } from "./../../hooks/useUserCertificate";
-import CertificateCard from "./../components/CertificateCard";
+import { useUserCertificates } from "./../../../hooks/useUserCertificate";
+import CertificateCard from "./../../components/CertificateCard";
 import { useState, useEffect } from "react";
 import {
   GraduationCap,

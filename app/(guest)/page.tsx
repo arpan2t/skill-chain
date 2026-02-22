@@ -1,9 +1,5 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "./../lib/auth";
-import { WalletButton } from "./components/WalletButton";
+import { WalletButton } from "./../components/WalletButton";
 import { GraduationCap, Shield, Zap, Globe, ArrowRight } from "lucide-react";
-import { redirect } from "next/navigation";
-import Link from "next/link";
 
 const Index = () => {
   return (
