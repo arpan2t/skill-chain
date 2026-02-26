@@ -37,14 +37,14 @@ const mainNav = [
   },
   { title: "Issue Certificate", url: "/admin/issue", icon: Award },
   {
-    title: "Revoke Certificate",
-    url: "/admin/revoke/certificates",
-    icon: FileCheck,
-  },
-  {
     title: "Verify Certificate",
     url: "/admin/verify/certificates",
     icon: ShieldCheck,
+  },
+  {
+    title: "Revoke Certificate",
+    url: "/admin/revoke/certificates",
+    icon: FileCheck,
   },
 ];
 

@@ -60,8 +60,27 @@ async function uploadMetadataToPinata(metadata) {
   return `https://gateway.pinata.cloud/ipfs/${result.IpfsHash}`;
 }
 
-export async function POST(req) {
+function truncateForBlockchain(str: string, maxBytes: number = 32): string {
+  if (Buffer.byteLength(str, 'utf8') <= maxBytes) return str;
+  
+  let result = '';
+  let bytes = 0;
+  
+  for (const char of str) {
+    const charBytes = Buffer.byteLength(char, 'utf8');
+    if (bytes + charBytes <= maxBytes - 3){
+      result += char;
+      bytes += charBytes;
+    } else {
+      break;
+    }
+  }
+  
+  return result + '...';
+}
 
+
+export async function POST(req) {
 
   try {
     const session = await getServerSession(authOptions);
@@ -91,10 +110,12 @@ export async function POST(req) {
       );
     }
 
+    const onChainTitle = truncateForBlockchain(title , 32);
+
+
     // Create NFT metadata and upload to Pinata
     const metadata = {
       name: title,
-      description: `${description || ""}`,
       image: ipfsUrl,
       symbol: "SKILL",
       attributes: [
@@ -122,8 +143,7 @@ export async function POST(req) {
     // Mint the NFT
     const { nft } = await (metaplex.nfts().create as any)({
       uri,
-      name: title,
-      description: `${description || ""}`,
+      name: onChainTitle,
       symbol: "SKILL",
       sellerFeeBasisPoints: 0,
       tokenOwner: destinationPubkey,

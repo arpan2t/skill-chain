@@ -36,16 +36,30 @@ export async function GET(
           try {
             const mintAddress = new PublicKey(address.trim());
             const nft = await metaplex.nfts().findByMint({ mintAddress });
+            
             onChainData = nft.json;
+            const json_uri = onChainData?.uri;
+            var jsonData;
+            if(json_uri){
+              try{
+                const response = await fetch(json_uri);
+                if(response.ok){
+                  jsonData = await response.json();
+                } else {
+                  console.error(`Failed to fetch JSON from ${json_uri}: ${response.status}`);
+                } }catch (fetchError) {
+                  console.error(`Error fetching JSON from ${json_uri}:`, fetchError);
+              }
+            }
           } catch (error) {
             console.error(`Error fetching on-chain for ${address}:`, error);
           }
 
           return {
             nftAddress: address.trim(),
-            title: onChainData?.name || dbCert?.title || "Certificate",
-            description: onChainData?.description || dbCert?.description || "",
-            image: onChainData?.image || dbCert?.ipfsUrl || "",
+            title: jsonData?.name || onChainData?.name || dbCert?.title || "Certificate",
+            description: jsonData?.description || onChainData?.description || dbCert?.description || "",
+            image: jsonData?.image || onChainData?.image || dbCert?.ipfsUrl || "",
             issuer: dbCert?.issuedBy?.name || onChainData?.attributes?.find(
               (a: any) => a.trait_type === "Issuer"
             )?.value || "Unknown",
