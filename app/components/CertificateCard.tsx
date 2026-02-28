@@ -42,7 +42,7 @@ export default function CertificateCard({
   const handleShare = async () => {
     try {
       await navigator.clipboard.writeText(
-        `${window.location.origin}/verify/${certificate.nftAddress}`,
+        `${window.location.origin}/shared?certs=${certificate.nftAddress}`,
       );
       setCopySuccess(true);
       setTimeout(() => setCopySuccess(false), 2000);
