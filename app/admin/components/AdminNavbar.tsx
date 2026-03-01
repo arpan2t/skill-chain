@@ -1,8 +1,10 @@
 "use client";
 import { Bell, Search, GraduationCap } from "lucide-react";
 import { SidebarTrigger } from "./../../components/ui/sidebar";
+import { useSession } from "next-auth/react";
 
 export function AdminNavbar() {
+  const { data: session, status } = useSession();
   return (
     <header className="h-14 flex items-center justify-between px-4 border-b border-border bg-background/95 backdrop-blur-sm sticky top-0 z-40">
       <div className="flex items-center gap-3">
@@ -29,15 +31,15 @@ export function AdminNavbar() {
         <button className="flex items-center gap-2 pl-2 pr-3 py-1 rounded-lg hover:bg-accent transition-colors">
           <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center shrink-0">
             <span className="text-[11px] font-semibold text-primary-foreground">
-              AD
+              {session?.user?.name?.charAt(0).toUpperCase() || "A"}
             </span>
           </div>
           <div className="hidden sm:block text-left">
             <p className="text-xs font-medium text-foreground leading-none">
-              Admin
+              {session?.user?.name}
             </p>
             <p className="text-[10px] text-muted-foreground leading-none mt-0.5">
-              admin@skillchain.io
+              {session?.user?.email}
             </p>
           </div>
         </button>

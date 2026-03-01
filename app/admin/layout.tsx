@@ -4,6 +4,7 @@ import { AppSidebar } from "./components/AdminSidebar";
 import { AdminNavbar } from "./components/AdminNavbar";
 import { useIsMobile } from "./../../hooks/useMobile";
 import * as React from "react";
+import { SessionProvider } from "next-auth/react";
 const MEDIUM_BREAKPOINT = 1024;
 
 interface AdminLayoutProps {
@@ -19,14 +20,16 @@ export default function RootLayout({ children }: AdminLayoutProps) {
   });
 
   return (
-    <SidebarProvider defaultOpen={defaultOpen}>
-      <div className="flex min-h-screen w-full bg-background">
-        <AppSidebar />
-        <SidebarInset className="flex flex-col flex-1 min-w-0">
-          <AdminNavbar />
-          <main className="flex-1 p-6 overflow-auto">{children}</main>
-        </SidebarInset>
-      </div>
-    </SidebarProvider>
+    <SessionProvider>
+      <SidebarProvider defaultOpen={defaultOpen}>
+        <div className="flex min-h-screen w-full bg-background">
+          <AppSidebar />
+          <SidebarInset className="flex flex-col flex-1 min-w-0">
+            <AdminNavbar />
+            <main className="flex-1 p-6 overflow-auto">{children}</main>
+          </SidebarInset>
+        </div>
+      </SidebarProvider>
+    </SessionProvider>
   );
 }
