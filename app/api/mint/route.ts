@@ -10,7 +10,6 @@ import {
 import { PublicKey } from "@solana/web3.js";
 import { TokenStandard } from "@metaplex-foundation/mpl-token-metadata";
 
-
 async function uploadMetadataToPinata(metadata) {
   const pinataJwt = process.env.PINATA_JWT;
   if (!pinataJwt) {
@@ -61,27 +60,25 @@ async function uploadMetadataToPinata(metadata) {
 }
 
 function truncateForBlockchain(str: string, maxBytes: number = 32): string {
-  if (Buffer.byteLength(str, 'utf8') <= maxBytes) return str;
-  
-  let result = '';
+  if (Buffer.byteLength(str, "utf8") <= maxBytes) return str;
+
+  let result = "";
   let bytes = 0;
-  
+
   for (const char of str) {
-    const charBytes = Buffer.byteLength(char, 'utf8');
-    if (bytes + charBytes <= maxBytes - 3){
+    const charBytes = Buffer.byteLength(char, "utf8");
+    if (bytes + charBytes <= maxBytes - 3) {
       result += char;
       bytes += charBytes;
     } else {
       break;
     }
   }
-  
-  return result + '...';
+
+  return result + "...";
 }
 
-
 export async function POST(req) {
-
   try {
     const session = await getServerSession(authOptions);
 
@@ -110,10 +107,8 @@ export async function POST(req) {
       );
     }
 
-    const onChainTitle = truncateForBlockchain(title , 32);
+    const onChainTitle = truncateForBlockchain(title, 32);
 
-
-    // Create NFT metadata and upload to Pinata
     const metadata = {
       name: title,
       image: ipfsUrl,
@@ -148,19 +143,19 @@ export async function POST(req) {
       sellerFeeBasisPoints: 0,
       tokenOwner: destinationPubkey,
 
-      tokenStandard: TokenStandard.ProgrammableNonFungible,
+      tokenStandard: TokenStandard.NonFungible,
       ruleSet: null, // required for non-transferable pNFT
 
       updateAuthority: adminKeypair,
       mintAuthority: adminKeypair,
       freezeAuthority: adminKeypair,
 
-      isMutable: false,
+      isMutable: true,
       creators: [
         {
           address: adminKeypair.publicKey,
           share: 100,
-         authority: adminKeypair,
+          authority: adminKeypair,
         },
       ],
     });

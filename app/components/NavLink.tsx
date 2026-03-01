@@ -34,8 +34,6 @@ const NavLink = forwardRef<HTMLAnchorElement, NavLinkProps>(
         className={cn(
           className,
           isActive && activeClassName,
-          // Next.js doesn't expose "isPending" directly like RR v6
-          // so we leave pendingClassName optional
         )}
         {...props}
       />

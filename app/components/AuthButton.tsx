@@ -9,7 +9,7 @@ export function AuthButton({ session }: { session: any }) {
 
   const isAdminRoute = pathname?.startsWith("/admin");
 
-  if (!session) {
+  if (!session.user) {
     return (
       <Link href="/login">
         <button className="bg-primary rounded-sm !px-6 !py-3 !text-white !font-semibold !transition-all hover:!bg-[#0e2c3b] hover:!scale-105 hover:!shadow-lg">

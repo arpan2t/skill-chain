@@ -4,7 +4,6 @@ export async function generateCertificateQR(nftAddress: string): Promise<string>
   const verificationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/verify/${nftAddress}`;
   
   try {
-    // Generate QR code as data URL
     const qrDataUrl = await QRCode.toDataURL(verificationUrl, {
       width: 300,
       margin: 2,

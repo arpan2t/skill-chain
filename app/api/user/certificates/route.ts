@@ -90,11 +90,9 @@ export async function POST(req: Request) {
             }
           }
 
-          // Determine which source to use for each field
           let title, description, image, attributes, issuer, issuedAt , revoked;
           
           if (flag === 1 && dbCertificate) {
-            // Use database data
             title = dbCertificate.title || fullNft.name || "N/A";
             description = dbCertificate.description || "";
             image = dbCertificate.ipfsUrl || "";

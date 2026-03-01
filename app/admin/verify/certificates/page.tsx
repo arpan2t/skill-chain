@@ -21,6 +21,8 @@ import {
   Clock,
   Hash,
   Sparkles,
+  Info,
+  AlertTriangle,
 } from "lucide-react";
 import { toast } from "./../../../../hooks/useToast";
 
@@ -29,6 +31,7 @@ interface VerificationResponse {
   verification: {
     exists: boolean;
     revoked: boolean;
+    revocationReason?: string;
     certificate?: {
       name: string;
       recipient: string;
@@ -53,6 +56,7 @@ interface VerificationResult {
     description?: string;
     imageUrl?: string;
     status: "active" | "revoked";
+    revocationReason?: string;
   };
   error?: string;
 }
@@ -97,6 +101,7 @@ export default function VerifyPage() {
               description: data.verification.certificate.description,
               imageUrl: data.verification.certificate.imageUrl,
               status: data.verification.revoked ? "revoked" : "active",
+              revocationReason: data.verification.revocationReason,
             },
           });
         } else {
@@ -137,12 +142,27 @@ export default function VerifyPage() {
       year: "numeric",
       month: "long",
       day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
   const truncateAddress = (address: string) => {
     if (!address) return "";
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  };
+
+  const getRevocationSourceText = (source?: string) => {
+    switch (source) {
+      case "blockchain":
+        return "Revoked on blockchain";
+      case "database":
+        return "Revoked in database";
+      case "both":
+        return "Revoked on blockchain and database";
+      default:
+        return "Revoked";
+    }
   };
 
   return (
@@ -177,7 +197,7 @@ export default function VerifyPage() {
           </p>
         </div>
 
-        {/* Search Card - Glassmorphism effect */}
+        {/* Search Card */}
         <div className="rounded-2xl border border-border/50 bg-card/80 backdrop-blur-sm p-6 md:p-8 shadow-lg">
           <div className="flex items-center gap-4 mb-6">
             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
@@ -234,7 +254,7 @@ export default function VerifyPage() {
           </div>
         </div>
 
-        {/* Loading State - Skeleton */}
+        {/* Loading State */}
         {loading && (
           <div className="rounded-2xl border border-border/50 bg-card/80 backdrop-blur-sm p-8 flex flex-col items-center gap-4">
             <div className="relative">
@@ -325,7 +345,7 @@ export default function VerifyPage() {
             {/* Certificate Details */}
             {result.verified && result.certificate && (
               <div className="p-6 space-y-6">
-                {/* Certificate Image with gradient overlay */}
+                {/* Certificate Image */}
                 {result.certificate.imageUrl && (
                   <div className="relative rounded-xl overflow-hidden border border-border/50 group">
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -334,13 +354,30 @@ export default function VerifyPage() {
                       alt={result.certificate.name}
                       className="w-full h-56 object-cover"
                     />
-                    <div className="absolute bottom-3 left-3 right-3">
-                      <p className="text-white text-sm font-medium truncate opacity-0 group-hover:opacity-100 transition-opacity">
-                        {result.certificate.name}
-                      </p>
-                    </div>
                   </div>
                 )}
+
+                {/* Revocation Reason - Show prominently if revoked */}
+                {result.certificate.status === "revoked" &&
+                  result.certificate.revocationReason && (
+                    <div className="rounded-xl bg-orange-500/10 border border-orange-500/30 p-5">
+                      <div className="flex items-start gap-3">
+                        <div className="w-8 h-8 rounded-full bg-orange-500/20 flex items-center justify-center shrink-0">
+                          <AlertTriangle className="w-4 h-4 text-orange-500" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <h4 className="text-sm font-semibold text-orange-500">
+                              Revocation Reason
+                            </h4>
+                          </div>
+                          <p className="text-sm text-foreground/90 bg-background/50 p-3 rounded-lg border border-orange-500/20">
+                            "{result.certificate.revocationReason}"
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                 {/* Certificate Info Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -383,7 +420,7 @@ export default function VerifyPage() {
                   </div>
                 )}
 
-                {/* Mint Address - Fixed overflow issue */}
+                {/* Mint Address */}
                 <div className="rounded-xl bg-secondary/40 border border-border/50 p-4">
                   <p className="text-xs text-muted-foreground/70 mb-2 flex items-center gap-1.5">
                     <Hash className="w-3 h-3" />
@@ -438,30 +475,6 @@ export default function VerifyPage() {
   );
 }
 
-// Enhanced DetailRow component with better layout
-function DetailRow({
-  icon: Icon,
-  label,
-  value,
-}: {
-  icon: React.ElementType;
-  label: string;
-  value: string;
-}) {
-  return (
-    <div className="flex items-start gap-3 p-3 rounded-xl bg-secondary/20 border border-border/30 hover:border-border/60 transition-colors">
-      <div className="w-8 h-8 rounded-lg bg-secondary/50 flex items-center justify-center shrink-0">
-        <Icon className="w-4 h-4 text-muted-foreground" />
-      </div>
-      <div className="min-w-0 flex-1">
-        <p className="text-xs text-muted-foreground/70">{label}</p>
-        <p className="text-sm font-medium text-foreground truncate">{value}</p>
-      </div>
-    </div>
-  );
-}
-
-// New InfoCard component for better organization
 function InfoCard({
   icon: Icon,
   label,

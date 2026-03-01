@@ -1,4 +1,3 @@
-// app/api/certificates/revocation-requests/route.ts
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./../../../../../lib/auth";
@@ -11,7 +10,6 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Check if user is verified to issue/revoke (is_verified = 1)
     if (session.user.is_verified !== 1) {
       return NextResponse.json(
         { error: "You are not verified to handle revocation requests" },
@@ -22,14 +20,12 @@ export async function GET(req: Request) {
     const url = new URL(req.url);
     const certificateId = url.searchParams.get("certificateId");
 
-    // Build where clause
     const where: any = {
       certificate: {
         issuedById: parseInt(session.user.id) // Only show requests for certificates this user issued
       }
     };
 
-    // Filter by specific certificate if provided
     if (certificateId) {
       where.certificateId = parseInt(certificateId);
     }

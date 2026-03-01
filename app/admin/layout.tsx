@@ -3,7 +3,7 @@ import { SidebarProvider, SidebarInset } from "./../components/ui/sidebar";
 import { AppSidebar } from "./components/AdminSidebar";
 import { AdminNavbar } from "./components/AdminNavbar";
 import { useIsMobile } from "./../../hooks/useMobile";
-import * as React from "react"; 
+import * as React from "react";
 const MEDIUM_BREAKPOINT = 1024;
 
 interface AdminLayoutProps {

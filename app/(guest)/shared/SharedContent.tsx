@@ -45,7 +45,6 @@ export default function SharedPage() {
   const [certificates, setCertificates] = useState<Certificate[]>([]);
   const [view, setView] = useState<"grid" | "list">("grid");
 
-  // Verification states - SIMPLIFIED
   const [verificationMode, setVerificationMode] = useState(false);
   const [selectedCerts, setSelectedCerts] = useState<string[]>([]);
   const [verificationResults, setVerificationResults] = useState<
@@ -119,7 +118,6 @@ export default function SharedPage() {
     setSelectedCerts([]);
   };
 
-  // SIMPLIFIED: Only checks exists and revoked
   const verifySelectedCertificates = async () => {
     if (selectedCerts.length === 0) return;
 
@@ -155,12 +153,10 @@ export default function SharedPage() {
     setVerifying(false);
   };
 
-  // SIMPLIFIED: Only shows Verified (exists + active) or Not Verified
   const getVerificationBadge = (address: string) => {
     const result = verificationResults[address];
     if (!result) return null;
 
-    // Verified = exists AND not revoked
     const isVerified = result.exists && !result.revoked;
 
     return isVerified ? (

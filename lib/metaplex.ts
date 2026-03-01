@@ -2,14 +2,11 @@ import { Connection, Keypair } from "@solana/web3.js";
 import { Metaplex, keypairIdentity } from "@metaplex-foundation/js";
 import bs58 from "bs58";
 
-// Use your devnet or mainnet cluster
 export const connection = new Connection(process.env.SOLANA_RPC! , "confirmed");
 
-// Lazy initialization to prevent module load failures
 let _adminKeypair: Keypair | null = null;
 let _metaplex: Metaplex | null = null;
 
-// Load your admin wallet (mint authority)
 
 export const getAdminKeypair = (): Keypair => {
   if (_adminKeypair) return _adminKeypair;
