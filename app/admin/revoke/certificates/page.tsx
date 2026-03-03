@@ -22,6 +22,8 @@ import { Input } from "./../../../components/ui/input";
 import { Label } from "./../../../components/ui/label";
 import { Textarea } from "./../../../components/ui/textarea";
 import { toast } from "./../../../../hooks/useToast";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 interface CertificateData {
   id?: number;
@@ -48,11 +50,7 @@ interface CertificateData {
   }>;
 }
 
-interface RevokeClientProps {
-  session: Session;
-}
-
-export default function RevokeClient({ session }: RevokeClientProps) {
+export default function RevokeClient() {
   const [nftAddress, setNftAddress] = useState("");
   const [loading, setLoading] = useState(false);
   const [revoking, setRevoking] = useState(false);
@@ -65,6 +63,11 @@ export default function RevokeClient({ session }: RevokeClientProps) {
   const [revokeReason, setRevokeReason] = useState("");
   const [error, setError] = useState<string | null>(null);
 
+  const { data: session } = useSession();
+
+  if (!session || !session.user) {
+    redirect("/login");
+  }
   const handleSearch = async () => {
     if (!nftAddress.trim()) {
       toast({
@@ -220,7 +223,7 @@ export default function RevokeClient({ session }: RevokeClientProps) {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-destructive to-destructive/60 bg-clip-text text-transparent">
-            Revoke Certificate
+            <span className="text-white">Revoke</span> Certificate
           </h1>
           <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto">
             Search for a certificate to revoke or request revocation.

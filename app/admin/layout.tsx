@@ -26,7 +26,7 @@ export default function RootLayout({ children }: AdminLayoutProps) {
           <AppSidebar />
           <SidebarInset className="flex flex-col flex-1 min-w-0">
             <AdminNavbar />
-            <main className="flex-1 p-6 overflow-auto">{children}</main>
+            <main className="flex-1 mt-6 p-6 overflow-auto">{children}</main>
           </SidebarInset>
         </div>
       </SidebarProvider>

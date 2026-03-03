@@ -11,12 +11,21 @@ export default async function AdminDashboard() {
     redirect("/login");
   }
 
+  const adminId = Number(session.user.id);
+
   const [totalCertificates, totalRecipients, activeThisMonth, recentActivity] =
     await Promise.all([
-      prisma.certificate.count(),
+      prisma.certificate.count({
+        where: {
+          issuedById: adminId,
+        },
+      }),
 
       prisma.certificate
         .findMany({
+          where: {
+            issuedById: adminId,
+          },
           select: { destination_wallet: true },
           distinct: ["destination_wallet"],
         })
@@ -24,6 +33,7 @@ export default async function AdminDashboard() {
 
       prisma.certificate.count({
         where: {
+          issuedById: adminId,
           mintedAt: {
             gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
           },
@@ -31,6 +41,9 @@ export default async function AdminDashboard() {
       }),
 
       prisma.certificate.findMany({
+        where: {
+          issuedById: adminId,
+        },
         take: 5,
         orderBy: { mintedAt: "desc" },
         include: {
@@ -72,7 +85,7 @@ export default async function AdminDashboard() {
         "..." +
         cert.destination_wallet.slice(-4),
       time: getTimeAgo(cert.mintedAt),
-      iconName, // Pass icon name as string
+      iconName,
       color,
       bg,
     };
@@ -111,7 +124,7 @@ export default async function AdminDashboard() {
     {
       label: "Verify a Certificate",
       iconName: "ShieldCheck",
-      href: "/verify/certificates",
+      href: "/admin/verify/certificates",
     },
     {
       label: "Manage Recipients",

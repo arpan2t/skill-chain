@@ -12,10 +12,15 @@ import {
 
 export default async function LoginPage() {
   const session = await getServerSession(authOptions);
-  if (session) {
-    if (session.user.user_type === 0) redirect("/admin/issue");
-    redirect("/user");
+
+  if (session?.user) {
+    if (session.user.user_type === 0) {
+      redirect("/admin/dashboard");
+    } else {
+      redirect("/dashboard");
+    }
   }
+
   return (
     <div className="min-h-screen flex bg-background text-foreground">
       {/* Left Panel */}

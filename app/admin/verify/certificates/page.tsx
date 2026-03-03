@@ -25,6 +25,8 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { toast } from "./../../../../hooks/useToast";
+import { redirect } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 interface VerificationResponse {
   success: boolean;
@@ -61,10 +63,16 @@ interface VerificationResult {
   error?: string;
 }
 
-export default function VerifyPage() {
+export default async function VerifyPage() {
   const [mintAddress, setMintAddress] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<VerificationResult | null>(null);
+
+  const { data: session } = useSession();
+
+  if (!session?.user || !session) {
+    redirect("/login");
+  }
 
   const handleVerify = async () => {
     if (!mintAddress.trim()) {
@@ -86,7 +94,6 @@ export default function VerifyPage() {
       });
 
       const data: VerificationResponse = await response.json();
-      console.log("API Response:", data);
 
       if (response.ok && data.success) {
         if (data.verification.exists && data.verification.certificate) {
@@ -170,7 +177,7 @@ export default function VerifyPage() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 space-y-6">
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-            Verify Certificate
+            <span className="text-white">Verify</span> Certificate
           </h1>
           <p className="text-sm text-muted-foreground mt-2 max-w-md mx-auto">
             Enter a Solana mint address to verify the authenticity of a

@@ -1,48 +1,101 @@
 "use client";
-import { Bell, Search, GraduationCap } from "lucide-react";
-import { SidebarTrigger } from "./../../components/ui/sidebar";
-import { useSession } from "next-auth/react";
+
+import { useState, useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
+import { useTheme } from "next-themes";
+import { Bell, Search, Moon, Sun, Maximize2, Minimize2 } from "lucide-react";
 
 export function AdminNavbar() {
-  const { data: session, status } = useSession();
+  const { theme, setTheme } = useTheme();
+  const pathname = usePathname();
+
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen();
+      setIsFullscreen(false);
+    }
+  };
+
+  const getPageTitle = () => {
+    if (pathname === "/admin") return "Dashboard";
+    if (pathname.includes("/certificates")) return "Issued Certificates";
+    if (pathname.includes("/issue")) return "Issue Certificate";
+    if (pathname.includes("/verify")) return "Verify Certificate";
+    if (pathname.includes("/revoke")) return "Revoke Certificate";
+    if (pathname.includes("/revocation-requests")) return "Revoke Requests";
+    if (pathname.includes("/user/certificates"))
+      return "My Issued Certificates";
+    if (pathname.includes("/settings")) return "Settings";
+    return "Admin Panel";
+  };
+
+  if (!mounted) return null;
+
   return (
-    <header className="h-14 flex items-center justify-between px-4 border-b border-border bg-background/95 backdrop-blur-sm sticky top-0 z-40">
-      <div className="flex items-center gap-3">
-        <SidebarTrigger className="text-muted-foreground hover:text-foreground transition-colors" />
-        <div className="h-4 w-px bg-border hidden sm:block" />
-      </div>
-      <div className="hidden md:flex items-center gap-2 max-w-xs w-full">
-        <div className="relative w-full">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
+    <header
+      className={`fixed top-0 lg:top-0 left-0 right-0 lg:left-64 z-30 bg-gradient-to-r from-card/95 to-secondary/95 backdrop-blur-xl border-b border-border/50 transition-all duration-300 ${
+        isScrolled ? "shadow-lg" : ""
+      }`}
+    >
+      <div className="px-4 md:px-6 h-16  flex items-center justify-between">
+        <div className="hidden md:block relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <input
             type="text"
             placeholder="Search..."
-            className="w-full pl-9 pr-4 py-1.5 text-sm bg-secondary border border-border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring transition-all"
+            className="w-64 pl-10 pr-4 py-2 rounded-full bg-secondary/50 border border-border/50 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all text-sm"
           />
         </div>
-      </div>
 
-      <div className="flex items-center gap-2">
-        <button className="relative w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
-          <Bell className="w-4 h-4" />
-          <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-primary rounded-full" />
-        </button>
+        <div className="flex items-center gap-2">
+          {/* Theme Toggle */}
+          <button
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            className="p-2 hover:bg-secondary/80 rounded-lg transition-colors"
+            aria-label="Toggle theme"
+          >
+            {theme === "dark" ? (
+              <Sun className="w-5 h-5" />
+            ) : (
+              <Moon className="w-5 h-5" />
+            )}
+          </button>
 
-        <button className="flex items-center gap-2 pl-2 pr-3 py-1 rounded-lg hover:bg-accent transition-colors">
-          <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center shrink-0">
-            <span className="text-[11px] font-semibold text-primary-foreground">
-              {session?.user?.name?.charAt(0).toUpperCase() || "A"}
-            </span>
-          </div>
-          <div className="hidden sm:block text-left">
-            <p className="text-xs font-medium text-foreground leading-none">
-              {session?.user?.name}
-            </p>
-            <p className="text-[10px] text-muted-foreground leading-none mt-0.5">
-              {session?.user?.email}
-            </p>
-          </div>
-        </button>
+          <button
+            onClick={toggleFullscreen}
+            className="hidden md:block p-2 hover:bg-secondary/80 rounded-lg transition-colors"
+            aria-label="Toggle fullscreen"
+          >
+            {isFullscreen ? (
+              <Minimize2 className="w-5 h-5" />
+            ) : (
+              <Maximize2 className="w-5 h-5" />
+            )}
+          </button>
+
+          <button
+            className="p-2 hover:bg-secondary/80 rounded-lg transition-colors relative"
+            aria-label="Notifications"
+          >
+            <Bell className="w-5 h-5" />
+            <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full animate-pulse" />
+          </button>
+        </div>
       </div>
     </header>
   );
