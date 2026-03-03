@@ -254,7 +254,7 @@ export default function RevokeClient({ session }: RevokeClientProps) {
                   placeholder="Enter Solana mint address..."
                   value={nftAddress}
                   onChange={(e) => setNftAddress(e.target.value)}
-                  className="font-mono text-sm pl-9 h-12 bg-background/50 border-border/50 focus:border-destructive transition-all"
+                  className="font-mono text-sm pl-9 h-12 bg-background/50 border-border/50 focus:border-destructive transition-all  focus-visible:ring-0"
                   onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                 />
               </div>

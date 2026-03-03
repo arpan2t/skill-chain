@@ -50,6 +50,11 @@ const mainNav = [
 
 const manageNav = [
   {
+    title: "My Issued Certificates",
+    url: "/admin/issued/certificates",
+    icon: Award,
+  },
+  {
     title: "Revoke Requests",
     url: "/admin/revoke/requests",
     icon: FileCheck2Icon,

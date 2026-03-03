@@ -168,25 +168,6 @@ export default function VerifyPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20 py-8">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 space-y-6">
-        {/* Header with decorative elements */}
-        <div className="relative mb-8">
-          <div
-            className="absolute inset-0 flex items-center"
-            aria-hidden="true"
-          >
-            <div className="w-full border-t border-border" />
-          </div>
-          <div className="relative flex justify-center">
-            <div className="bg-background px-4 flex items-center gap-2 text-primary">
-              <BadgeCheck className="w-5 h-5" />
-              <span className="text-sm font-medium uppercase tracking-wider">
-                Certificate Verification
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Hero Section */}
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
             Verify Certificate
@@ -197,7 +178,6 @@ export default function VerifyPage() {
           </p>
         </div>
 
-        {/* Search Card */}
         <div className="rounded-2xl border border-border/50 bg-card/80 backdrop-blur-sm p-6 md:p-8 shadow-lg">
           <div className="flex items-center gap-4 mb-6">
             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
@@ -254,7 +234,6 @@ export default function VerifyPage() {
           </div>
         </div>
 
-        {/* Loading State */}
         {loading && (
           <div className="rounded-2xl border border-border/50 bg-card/80 backdrop-blur-sm p-8 flex flex-col items-center gap-4">
             <div className="relative">
@@ -272,7 +251,6 @@ export default function VerifyPage() {
           </div>
         )}
 
-        {/* Result */}
         {result && !loading && (
           <div
             className={`rounded-2xl border overflow-hidden transition-all duration-500 animate-in fade-in slide-in-from-bottom-4 ${
@@ -283,7 +261,6 @@ export default function VerifyPage() {
                 : "border-destructive/30 bg-gradient-to-br from-destructive/5 via-transparent to-transparent"
             }`}
           >
-            {/* Status Header */}
             <div className="px-6 py-4 border-b border-border/50 bg-secondary/20">
               <div className="flex items-center gap-3">
                 <div
@@ -342,10 +319,8 @@ export default function VerifyPage() {
               </div>
             </div>
 
-            {/* Certificate Details */}
             {result.verified && result.certificate && (
               <div className="p-6 space-y-6">
-                {/* Certificate Image */}
                 {result.certificate.imageUrl && (
                   <div className="relative rounded-xl overflow-hidden border border-border/50 group">
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -357,7 +332,6 @@ export default function VerifyPage() {
                   </div>
                 )}
 
-                {/* Revocation Reason - Show prominently if revoked */}
                 {result.certificate.status === "revoked" &&
                   result.certificate.revocationReason && (
                     <div className="rounded-xl bg-orange-500/10 border border-orange-500/30 p-5">
@@ -379,7 +353,6 @@ export default function VerifyPage() {
                     </div>
                   )}
 
-                {/* Certificate Info Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <InfoCard
                     icon={Award}
@@ -407,7 +380,6 @@ export default function VerifyPage() {
                   />
                 </div>
 
-                {/* Description */}
                 {result.certificate.description && (
                   <div className="rounded-xl bg-secondary/30 border border-border/50 p-4">
                     <p className="text-xs text-muted-foreground/70 mb-2 flex items-center gap-1.5">
@@ -420,7 +392,6 @@ export default function VerifyPage() {
                   </div>
                 )}
 
-                {/* Mint Address */}
                 <div className="rounded-xl bg-secondary/40 border border-border/50 p-4">
                   <p className="text-xs text-muted-foreground/70 mb-2 flex items-center gap-1.5">
                     <Hash className="w-3 h-3" />
@@ -453,7 +424,6 @@ export default function VerifyPage() {
                   </div>
                 </div>
 
-                {/* Footer with timestamp */}
                 <div className="flex items-center justify-between pt-2 border-t border-border/30">
                   <div className="flex items-center gap-1.5 text-xs text-muted-foreground/60">
                     <Clock className="w-3 h-3" />
