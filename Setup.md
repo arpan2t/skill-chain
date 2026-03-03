@@ -1,6 +1,3 @@
-
-
-```markdown
 # 🔧 SkillChain Setup Instructions
 
 ## Prerequisites

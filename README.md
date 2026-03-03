@@ -64,18 +64,5 @@ Auth => NextAuth.js
 Wallet => Solana Wallet Adapter
 
 
-📁 Project Structure
-skillchain/
-├── app/                    # Next.js app router
-│   ├── admin/              # Admin routes
-│   ├── api/                # API endpoints
-│   ├── profile/            # User profile
-│   └── shared/             # Public shared view
-├── components/             # React components
-├── hooks/                  # Custom hooks
-├── lib/                    # Utilities
-├── prisma/                 # Database schema
-└── types/                  # TypeScript types
-
 📄 License
 MIT © arpan
