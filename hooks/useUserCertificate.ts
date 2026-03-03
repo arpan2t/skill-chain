@@ -10,6 +10,9 @@ interface Certificate {
   issuer: string;
   issuedAt: string;
   revoked: boolean;
+  revokedAt?: string | null;
+  revocationMessage?: string | null;
+  revokedBy?: string | null;
   metadataUri: string;
 }
 
@@ -28,22 +31,22 @@ export function useUserCertificates() {
     const fetchCertificates = async () => {
       setLoading(true);
       setError(null);
-      
+
       try {
-       const response = await fetch("/api/user/certificates", {
-            'method': "POST",
-            'headers': {
-                        "Content-Type": "application/json",
-                    },
-            'body': JSON.stringify({
-                wallet: publicKey.toString()
-            })
+        const response = await fetch("/api/user/certificates", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            wallet: publicKey.toString(),
+          }),
         });
-        
+
         if (!response.ok) {
           throw new Error("Failed to fetch certificates");
         }
-        
+
         const data = await response.json();
         setCertificates(data.data || []);
       } catch (err) {
@@ -59,11 +62,11 @@ export function useUserCertificates() {
 
   const refresh = async () => {
     if (!publicKey) return;
-    
+
     setLoading(true);
     try {
       const response = await fetch(
-        `/api/user/certificates?wallet=${publicKey.toString()}&refresh=true`
+        `/api/user/certificates?wallet=${publicKey.toString()}&refresh=true`,
       );
       const data = await response.json();
       setCertificates(data.data || []);
@@ -79,6 +82,6 @@ export function useUserCertificates() {
     loading,
     error,
     refresh,
-    hasCertificates: certificates.length > 0
+    hasCertificates: certificates.length > 0,
   };
 }

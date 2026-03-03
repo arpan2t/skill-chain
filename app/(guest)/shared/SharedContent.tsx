@@ -27,6 +27,9 @@ interface Certificate {
   recipientName: string;
   recipientWallet: string;
   revoked: boolean;
+  revocationMessage?: string;
+  revokedAt?: string | null;
+  revokedBy?: string | null;
   attributes: any[];
 }
 
@@ -455,6 +458,9 @@ export default function SharedPage() {
                     revoked: cert.revoked,
                     issuer: cert.issuer,
                     issuedAt: cert.issuedAt,
+                    revocationMessage: cert.revocationMessage,
+                    revokedAt: cert.revokedAt,
+                    revokedBy: cert.revokedBy,
                   }}
                   isAdmin={false}
                 />

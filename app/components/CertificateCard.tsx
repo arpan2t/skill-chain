@@ -11,6 +11,9 @@ import {
   ChevronUp,
   ImageOff,
   ShieldAlert,
+  AlertCircle,
+  Clock,
+  User,
 } from "lucide-react";
 
 interface CertificateCardProps {
@@ -21,6 +24,9 @@ interface CertificateCardProps {
     title: string;
     description?: string;
     revoked: boolean;
+    revokedAt?: string | null;
+    revocationMessage?: string | null;
+    revokedBy?: string | null;
     issuer: string;
     issuedAt?: string;
   };
@@ -32,6 +38,7 @@ export default function CertificateCard({
   isAdmin,
 }: CertificateCardProps) {
   const [showDetails, setShowDetails] = useState(false);
+  const [showRevocationDetails, setShowRevocationDetails] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
 
@@ -53,6 +60,10 @@ export default function CertificateCard({
 
   const formattedDate = certificate.issuedAt
     ? format(new Date(certificate.issuedAt), "PPP")
+    : null;
+
+  const formattedRevokedAt = certificate.revokedAt
+    ? format(new Date(certificate.revokedAt), "PPP")
     : null;
 
   if (!isMounted) {
@@ -105,7 +116,7 @@ export default function CertificateCard({
 
         {formattedDate && (
           <p className="text-xs text-muted-foreground mb-2">
-            Issued At : {formattedDate}
+            Issued: {formattedDate}
           </p>
         )}
 
@@ -120,6 +131,62 @@ export default function CertificateCard({
             {certificate.nftAddress.slice(-8)}
           </p>
         </div>
+
+        {/* Revocation Banner - Show if revoked */}
+        {certificate.revoked && (
+          <div className="mb-3 p-3 bg-destructive/10 border border-destructive/30 rounded-lg">
+            <div className="flex items-start gap-2">
+              <AlertCircle className="w-4 h-4 text-destructive flex-shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <p className="text-sm font-medium text-destructive mb-1">
+                  Certificate Revoked
+                </p>
+
+                {/* Revocation Message */}
+                {certificate.revocationMessage && (
+                  <p className="text-xs text-destructive/90 mb-2 italic">
+                    "{certificate.revocationMessage}"
+                  </p>
+                )}
+
+                {/* Toggle for more revocation details */}
+                {(certificate.revokedBy || formattedRevokedAt) && (
+                  <button
+                    onClick={() =>
+                      setShowRevocationDetails(!showRevocationDetails)
+                    }
+                    className="text-xs text-destructive hover:text-destructive/80 flex items-center gap-1 mt-1"
+                  >
+                    {showRevocationDetails ? "Hide details" : "View details"}
+                    {showRevocationDetails ? (
+                      <ChevronUp className="w-3 h-3" />
+                    ) : (
+                      <ChevronDown className="w-3 h-3" />
+                    )}
+                  </button>
+                )}
+
+                {/* Revocation Details */}
+                {showRevocationDetails && (
+                  <div className="mt-2 space-y-1.5 pt-2 border-t border-destructive/20">
+                    {certificate.revokedBy && (
+                      <div className="flex items-center gap-2 text-xs text-destructive/80">
+                        <User className="w-3 h-3" />
+                        <span>Revoked by: {certificate.revokedBy}</span>
+                      </div>
+                    )}
+                    {formattedRevokedAt && (
+                      <div className="flex items-center gap-2 text-xs text-destructive/80">
+                        <Clock className="w-3 h-3" />
+                        <span>Revoked on: {formattedRevokedAt}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Description toggle */}
         {certificate.description && (

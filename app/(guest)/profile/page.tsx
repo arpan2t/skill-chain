@@ -22,18 +22,11 @@ import {
 } from "lucide-react";
 import QRCode from "qrcode";
 
-interface SelectedCertificate {
-  nftAddress: string;
-  name: string;
-  issuer: string;
-}
-
 export default function ProfilePage() {
   const [isMounted, setIsMounted] = useState(false);
   const { publicKey, connected } = useWallet();
   const { certificates, loading, error, refresh } = useUserCertificates();
   const [view, setView] = useState<"grid" | "list">("grid");
-
   const [selectedCerts, setSelectedCerts] = useState<string[]>([]);
   const [selectMode, setSelectMode] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
@@ -110,23 +103,25 @@ export default function ProfilePage() {
     link.click();
   };
 
-  if (!isMounted) {
-    return (
-      <div className="min-h-screen bg-background">
-        <div className="max-w-6xl mx-auto px-6 py-12">
-          <div className="h-8 w-48 bg-muted rounded animate-pulse mb-4" />
-          <div className="h-4 w-64 bg-muted rounded animate-pulse mb-10" />
-          <div className="grid md:grid-cols-3 gap-6">
-            {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="h-72 bg-card border border-border rounded-xl animate-pulse"
-              />
-            ))}
-          </div>
+  const LoadingSkeleton = () => (
+    <div className="min-h-screen bg-background">
+      <div className="max-w-6xl mx-auto px-6 py-12">
+        <div className="h-8 w-48 bg-muted rounded animate-pulse mb-4" />
+        <div className="h-4 w-64 bg-muted rounded animate-pulse mb-10" />
+        <div className="grid md:grid-cols-3 gap-6">
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="h-72 bg-card border border-border rounded-xl animate-pulse"
+            />
+          ))}
         </div>
       </div>
-    );
+    </div>
+  );
+
+  if (!isMounted) {
+    return <LoadingSkeleton />;
   }
 
   if (!connected || !publicKey) {
@@ -146,7 +141,6 @@ export default function ProfilePage() {
   return (
     <div className="min-h-screen py-16 bg-background text-foreground">
       <div className="max-w-7xl mx-auto px-6 py-12">
-        {/* Header */}
         <div className="flex items-center justify-between mb-10">
           <div>
             <h1 className="text-2xl font-bold mb-1">My Certificates</h1>
@@ -156,7 +150,6 @@ export default function ProfilePage() {
           </div>
 
           <div className="flex items-center gap-2">
-            {/* Selection Mode Toggle */}
             <button
               onClick={() => setSelectMode(!selectMode)}
               className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors flex items-center gap-2 ${
@@ -169,7 +162,6 @@ export default function ProfilePage() {
               {selectMode ? "Exit Selection" : "Select"}
             </button>
 
-            {/* View Toggles */}
             <button
               onClick={() => setView("grid")}
               className={`p-2 rounded-lg transition-colors ${
@@ -200,7 +192,6 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* Selection Bar - Shows when items are selected */}
         {selectedCerts.length > 0 && (
           <div className="mb-6 p-4 bg-card border border-border rounded-xl flex items-center justify-between sticky top-4 z-10 backdrop-blur-sm bg-opacity-90">
             <div className="flex items-center gap-3">
@@ -234,7 +225,6 @@ export default function ProfilePage() {
           </div>
         )}
 
-        {/* Stats */}
         <div className="grid grid-cols-3 gap-4 mb-10">
           {[
             { label: "Total Certificates", value: certificates.length },
@@ -257,7 +247,6 @@ export default function ProfilePage() {
           ))}
         </div>
 
-        {/* Select All Option - Only in selection mode */}
         {selectMode && certificates.length > 0 && (
           <div className="mb-4 p-3 bg-secondary/50 rounded-lg flex items-center justify-between">
             <button
@@ -281,11 +270,8 @@ export default function ProfilePage() {
           </div>
         )}
 
-        {/* Content */}
         {loading ? (
-          <div className="flex justify-center py-20">
-            <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-          </div>
+          <LoadingSkeleton />
         ) : error ? (
           <p className="text-destructive text-center py-10">Error: {error}</p>
         ) : certificates.length === 0 ? (
@@ -306,7 +292,6 @@ export default function ProfilePage() {
           >
             {certificates.map((cert) => (
               <div key={cert.nftAddress} className="relative">
-                {/* Selection Checkbox - Only visible in selection mode */}
                 {selectMode && (
                   <button
                     onClick={() => toggleSelectCert(cert.nftAddress)}
@@ -327,7 +312,10 @@ export default function ProfilePage() {
                     description: cert.description || "",
                     revoked: cert.revoked || false,
                     issuer: cert.issuer || "N/A",
-                    issuedAt: cert.issuedAt || "N/A",
+                    issuedAt: cert.issuedAt || new Date().toISOString(),
+                    revokedAt: cert.revokedAt || null,
+                    revocationMessage: cert.revocationMessage || null,
+                    revokedBy: cert.revokedBy || null,
                   }}
                   isAdmin={false}
                 />
@@ -337,7 +325,6 @@ export default function ProfilePage() {
         )}
       </div>
 
-      {/* Share Modal */}
       {showShareModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-card rounded-xl max-w-md w-full p-6 border border-border">
@@ -356,14 +343,12 @@ export default function ProfilePage() {
               {selectedCerts.length !== 1 ? "s" : ""}
             </p>
 
-            {/* QR Code */}
             {qrCodeUrl && (
               <div className="mb-6 p-4 bg-white rounded-lg flex justify-center">
                 <img src={qrCodeUrl} alt="QR Code" className="w-48 h-48" />
               </div>
             )}
 
-            {/* Share Link */}
             <div className="mb-6">
               <label className="text-xs text-muted-foreground mb-1 block">
                 Shareable Link
@@ -389,7 +374,6 @@ export default function ProfilePage() {
               </div>
             </div>
 
-            {/* Actions */}
             <div className="flex gap-2">
               <button
                 onClick={downloadQR}
