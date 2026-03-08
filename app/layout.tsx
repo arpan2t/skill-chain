@@ -5,6 +5,7 @@ import { WalletContextProvider } from "./providers";
 import { GraduationCap, Link } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../lib/auth";
+import { Analytics } from "@vercel/analytics/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,6 +39,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <WalletContextProvider>{children}</WalletContextProvider>
+        <Analytics />
       </body>
     </html>
   );
